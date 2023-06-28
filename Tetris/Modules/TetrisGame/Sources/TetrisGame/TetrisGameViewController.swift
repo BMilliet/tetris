@@ -109,11 +109,11 @@ public final class TetrisGameViewController: UIViewController {
         boardView.addSubview(shape)
         shape.centerXYEqual(to: boardView)
         
-        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(drop), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(drop), userInfo: nil, repeats: true)
     }
 
     @objc func tapLeft() {
-        moveHorizontal(-20)
+        moveHorizontal(-25)
     }
 
     @objc func tapDown() {
@@ -121,7 +121,7 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     @objc func tapRight() {
-        moveHorizontal(20)
+        moveHorizontal(25)
     }
     
     @objc func rotateLeft() {
@@ -135,37 +135,31 @@ public final class TetrisGameViewController: UIViewController {
     }
     
     private func moveHorizontal(_ value: CGFloat) {
-        var realValue = value
-        
-        // adjust proportion
-        
-        if value > 0 {
-            realValue += shape.frame.width
-        }
-        
-        var newXPosition = shape.frame.minX + realValue
+        let originalX = shape.frame.midX
+        var newXPosition = originalX + value
         
         // colision
         
         if newXPosition > boardView.frame.width {
-            newXPosition = boardView.frame.width - shape.frame.width + 50
+            newXPosition = boardView.frame.width - shape.frame.width //+ 50
         } else if newXPosition < 0 {
-            newXPosition = 0 + shape.frame.width - 50
+            newXPosition = shape.frame.width //- 50
         }
         
         let animaiton = CABasicAnimation()
         animaiton.keyPath = "position.x"
-        animaiton.fromValue = newXPosition
+        animaiton.fromValue = originalX
         animaiton.toValue = newXPosition
-        animaiton.duration = 1
+        animaiton.duration = 0.05
         
         shape.layer.add(animaiton, forKey: "basic")
         shape.layer.position = CGPoint(x: newXPosition, y: shape.frame.midY)
     }
     
     @objc private func drop() {
-        let realValue: CGFloat = -100
-        let newYPosition = shape.frame.minY - realValue
+        let realValue: CGFloat = -25
+        let originalY = shape.frame.midY
+        let newYPosition = originalY - realValue
         
         // colision
         
@@ -175,9 +169,9 @@ public final class TetrisGameViewController: UIViewController {
         
         let animaiton = CABasicAnimation()
         animaiton.keyPath = "position.y"
-        animaiton.fromValue = newYPosition
+        animaiton.fromValue = originalY
         animaiton.toValue = newYPosition
-        animaiton.duration = 1
+        animaiton.duration = 0.1
         
         shape.layer.add(animaiton, forKey: "basic")
         shape.layer.position = CGPoint(x: shape.frame.midX, y: newYPosition)
