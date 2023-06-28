@@ -140,10 +140,8 @@ public final class TetrisGameViewController: UIViewController {
         
         // colision
         
-        if newXPosition > boardView.frame.width {
-            newXPosition = boardView.frame.width - shape.frame.width //+ 50
-        } else if newXPosition < 0 {
-            newXPosition = shape.frame.width //- 50
+        if newXPosition > boardView.frame.width || newXPosition <= 0 {
+            return
         }
         
         let animaiton = CABasicAnimation()
