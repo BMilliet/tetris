@@ -157,7 +157,14 @@ public final class TetrisGameViewController: UIViewController {
         print("shapeBufferX => \(shapeBufferX)")
         print("shapeBufferY => \(shapeBufferY)")
 
-        var newX = shapeBufferX + move
+        let newX = shapeBufferX + move
+
+        // WIP collision
+        if side == .left && newX < boardView.frame.minX {
+            return
+        } else if side == .right && newX > boardView.frame.maxX - (2 * CUBE_SIZE) {
+            return
+        }
 
         print("newX => \(newX)")
 
@@ -165,31 +172,7 @@ public final class TetrisGameViewController: UIViewController {
 
         animateMove(shape, from: shapeBufferX, to: newX, orientation: .horizontal)
     }
-    
-    private func moveHorizontal2(_ value: CGFloat) {
-//        let originalX = shape.frame.midX
-////        let shapeWidth = value > 0 ?
-////        (shape.selected().frame.width - shape.selected().frame.midX) :
-////        -shape.selected().frame.width
-//        let shapeWidth: CGFloat = 0
-//
-//        let padding = shape.frame.midX - shapeWidth
-//
-//        var newXPosition = originalX + value + shapeWidth
-//
-//        if newXPosition > boardView.frame.width || newXPosition <= 0 {
-//            return
-//        }
-//
-////        if value > 0 {
-////            newXPosition = newXPosition + shapeWidth + (shapeWidth / 5)
-////        } else {
-////            newXPosition = newXPosition - shapeWidth - (shapeWidth / 5)
-////        }
-//
-//        animateMove(shape, from: originalX, to: newXPosition, orientation: .horizontal)
-    }
-    
+
     @objc private func drop() {
 //        let realValue: CGFloat = -25
 //        let originalY = shape.frame.midY

@@ -142,6 +142,18 @@ public final class ShapeB: UIView, TetrisShape {
         return CGFloat(len.max()! * Int(CUBE_SIZE))
     }
 
+    public func leftCollision() -> CGFloat {
+        return 0
+    }
+
+    public func rightCollision() -> CGFloat {
+        return 0
+    }
+
+    public func downCollision() -> CGFloat {
+        return 0
+    }
+
     public func CollisionHeight() -> CGFloat {
         let currentMatrix = matrix[currentPosition]
         var len = [Int]()
