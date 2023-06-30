@@ -131,7 +131,7 @@ public final class ShapeB: UIView, TetrisShape {
         return CGFloat(matrix.first!.count * Int(CUBE_SIZE))
     }
 
-    public func CollisionWidth() -> CGFloat {
+    public func collisionWidth() -> CGFloat {
         let currentMatrix = matrix[currentPosition]
         var len = [Int]()
 
@@ -142,19 +142,7 @@ public final class ShapeB: UIView, TetrisShape {
         return CGFloat(len.max()! * Int(CUBE_SIZE))
     }
 
-    public func leftCollision() -> CGFloat {
-        return 0
-    }
-
-    public func rightCollision() -> CGFloat {
-        return 0
-    }
-
-    public func downCollision() -> CGFloat {
-        return 0
-    }
-
-    public func CollisionHeight() -> CGFloat {
+    public func collisionHeight() -> CGFloat {
         let currentMatrix = matrix[currentPosition]
         var len = [Int]()
 
@@ -163,6 +151,30 @@ public final class ShapeB: UIView, TetrisShape {
         len.append(currentMatrix[0][2] + currentMatrix[1][2] + currentMatrix[2][2])
 
         return CGFloat(len.max()! * Int(CUBE_SIZE))
+    }
+
+    public func leftCollision() -> CGFloat {
+        let currentMatrix = matrix[currentPosition]
+
+        if currentMatrix[0][0] == 0 && currentMatrix[1][0] == 0 && currentMatrix[2][0] == 0 {
+            return -CUBE_SIZE
+        } else {
+            return 0
+        }
+    }
+
+    public func rightCollision() -> CGFloat {
+        let currentMatrix = matrix[currentPosition]
+
+        if currentMatrix[0][2] == 0 && currentMatrix[1][2] == 0 && currentMatrix[2][2] == 0 {
+            return -CUBE_SIZE
+        } else {
+            return -2 * CUBE_SIZE
+        }
+    }
+
+    public func downCollision() -> CGFloat {
+        return 0
     }
 
     private func clearAll() {

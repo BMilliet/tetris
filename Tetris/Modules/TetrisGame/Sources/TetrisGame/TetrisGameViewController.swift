@@ -4,6 +4,8 @@ import ViewCode
 public final class TetrisGameViewController: UIViewController {
 
     private lazy var shapeB: ShapeB = ShapeB(.green)
+
+    private var animator: UIDynamicAnimator?
     
     private lazy var boardView: UIView = {
         let board = UIView()
@@ -117,6 +119,18 @@ public final class TetrisGameViewController: UIViewController {
         //shapeB.centerXYEqual(to: boardView)
 
         Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(drop), userInfo: nil, repeats: true)
+
+//        self.animator = UIDynamicAnimator(referenceView: self.view)
+//
+//        let gravity = UIGravityBehavior(items: [shapeB])
+//        let direction = CGVectorMake(0, 1)
+//        gravity.gravityDirection = direction
+//
+//        let bounds = UICollisionBehavior(items: [shapeB])
+//        bounds.translatesReferenceBoundsIntoBoundary = true
+//
+//        animator?.addBehavior(bounds)
+//        animator?.addBehavior(gravity)
     }
 
     @objc func tapLeft() {
@@ -140,10 +154,10 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     private func moveHorizontal(shape: TetrisShape, side: MoveSide) {
-        let shapeValidWidth = shape.absWidth()
+        let shapeValidWidth = shape.collisionWidth()
         let shapeBufferX = shape.frame.midX
         let shapeBufferY = shape.frame.midY
-        let shapeBufferWidth = shape.frame.width
+        let shapeBufferWidth = shape.absWidth()
 
         var move = CUBE_SIZE
 
@@ -160,9 +174,9 @@ public final class TetrisGameViewController: UIViewController {
         let newX = shapeBufferX + move
 
         // WIP collision
-        if side == .left && newX < boardView.frame.minX {
+        if side == .left && newX < boardView.frame.minX + shapeB.leftCollision() {
             return
-        } else if side == .right && newX > boardView.frame.maxX - (2 * CUBE_SIZE) {
+        } else if side == .right && newX > boardView.frame.maxX + shapeB.rightCollision() {
             return
         }
 
@@ -174,6 +188,10 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     @objc private func drop() {
+//        let shapeValidHeight = shape.collisionHeight()
+//        let shapeBufferY = shape.frame.midY
+//        let shapeBufferHeight = shape.absHeight()
+
 //        let realValue: CGFloat = -25
 //        let originalY = shape.frame.midY
 //        let newYPosition = originalY - realValue
