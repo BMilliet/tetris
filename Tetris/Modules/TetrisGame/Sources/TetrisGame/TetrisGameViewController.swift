@@ -5,8 +5,6 @@ public final class TetrisGameViewController: UIViewController {
 
     private lazy var shapeB: ShapeB = ShapeB(.green)
 
-    private var animator: UIDynamicAnimator?
-    
     private lazy var boardView: UIView = {
         let board = UIView()
         board.backgroundColor = .gray
@@ -116,21 +114,7 @@ public final class TetrisGameViewController: UIViewController {
             height: shapeB.absHeight()
         )
 
-        //shapeB.centerXYEqual(to: boardView)
-
         Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(drop), userInfo: nil, repeats: true)
-
-//        self.animator = UIDynamicAnimator(referenceView: self.view)
-//
-//        let gravity = UIGravityBehavior(items: [shapeB])
-//        let direction = CGVectorMake(0, 1)
-//        gravity.gravityDirection = direction
-//
-//        let bounds = UICollisionBehavior(items: [shapeB])
-//        bounds.translatesReferenceBoundsIntoBoundary = true
-//
-//        animator?.addBehavior(bounds)
-//        animator?.addBehavior(gravity)
     }
 
     @objc func tapLeft() {
@@ -147,13 +131,33 @@ public final class TetrisGameViewController: UIViewController {
     
     @objc func rotateLeft() {
         shapeB.rotateLeft()
+
+        // check collision left wall
+        if (shapeB.frame.midX < boardView.frame.minX) {
+            moveHorizontal(shape: shapeB, side: .right, animated: false)
+        }
+
+        // check collision right wall
+        if (shapeB.frame.midX - shapeB.rightCollision() > boardView.frame.maxX) {
+            moveHorizontal(shape: shapeB, side: .left, animated: false)
+        }
     }
     
     @objc func rotateRight() {
         shapeB.rotateRight()
+
+        // check collision left wall
+        if (shapeB.frame.midX < boardView.frame.minX) {
+            moveHorizontal(shape: shapeB, side: .right)
+        }
+
+        // check collision right wall
+        if (shapeB.frame.midX - shapeB.rightCollision() > boardView.frame.maxX) {
+            moveHorizontal(shape: shapeB, side: .left)
+        }
     }
 
-    private func moveHorizontal(shape: TetrisShape, side: MoveSide) {
+    private func moveHorizontal(shape: TetrisShape, side: MoveSide, animated: Bool = true) {
         let shapeValidWidth = shape.collisionWidth()
         let shapeBufferX = shape.frame.midX
         let shapeBufferY = shape.frame.midY
@@ -184,7 +188,7 @@ public final class TetrisGameViewController: UIViewController {
 
         print("===========")
 
-        animateMove(shape, from: shapeBufferX, to: newX, orientation: .horizontal)
+        animateMove(shape, from: shapeBufferX, to: newX, orientation: .horizontal, animated: animated)
     }
 
     @objc private func drop() {
@@ -205,14 +209,16 @@ public final class TetrisGameViewController: UIViewController {
 //        animateMove(shape, from: originalY, to: newYPosition, orientation: .vertical)
     }
 
-    private func animateMove(_ shape: TetrisShape, from: CGFloat, to: CGFloat, orientation: MoveOrientation) {
-        let animaiton = CABasicAnimation()
-        animaiton.keyPath = orientation == .horizontal ? "position.x" : "position.y"
-        animaiton.fromValue = from
-        animaiton.toValue = to
-        animaiton.duration = 0.05
+    private func animateMove(_ shape: TetrisShape, from: CGFloat, to: CGFloat, orientation: MoveOrientation, animated: Bool) {
+        if animated {
+            let animation = CABasicAnimation()
+            animation.keyPath = orientation == .horizontal ? "position.x" : "position.y"
+            animation.fromValue = from
+            animation.toValue = to
+            animation.duration = 0.05
 
-        shape.layer.add(animaiton, forKey: "basic")
+            shape.layer.add(animation, forKey: "basic")
+        }
 
         if orientation == .horizontal {
             shape.layer.position = CGPoint(x: to, y: shape.frame.midY)
