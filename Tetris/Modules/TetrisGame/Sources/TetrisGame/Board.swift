@@ -4,10 +4,10 @@ public final class Board {
     
     private var matrix = [[Int]]()
     private var selectedShape = ShapeA()
-    private var selectedShapeLastPlace = [4,4]
 
     init() {
         drawMatrix()
+        selectedShape.setCoordinates(4, 16)
     }
 
     private func createNewShape() {
@@ -40,7 +40,6 @@ public final class Board {
             }
         }
 
-        selectedShapeLastPlace = [x, y]
     }
 
     func remove(_ x: Int, _ y: Int) {
@@ -72,31 +71,63 @@ public final class Board {
     }
 
     func moveLeft() {
-        let x = selectedShapeLastPlace[0]
-        let y = selectedShapeLastPlace[1]
+        let x = selectedShape.coordinates()[0]
+        let y = selectedShape.coordinates()[1]
+
+        let newX = x - 1
 
         remove(x, y)
-        merge(x - 1, y)
+        merge(newX, y)
+
+        selectedShape.setCoordinates(newX, y)
 
         printAsTable()
     }
 
     func moveRight() {
-        let x = selectedShapeLastPlace[0]
-        let y = selectedShapeLastPlace[1]
+        let x = selectedShape.coordinates()[0]
+        let y = selectedShape.coordinates()[1]
+
+        let newX = x + 1
 
         remove(x, y)
-        merge(x + 1, y)
+        merge(newX, y)
+
+        selectedShape.setCoordinates(newX, y)
 
         printAsTable()
     }
 
     func moveDown() {
-        let x = selectedShapeLastPlace[0]
-        let y = selectedShapeLastPlace[1]
+        let x = selectedShape.coordinates()[0]
+        let y = selectedShape.coordinates()[1]
+
+        let newY = y + 1
 
         remove(x, y)
-        merge(x, y + 1)
+        merge(x, newY)
+
+        selectedShape.setCoordinates(x, newY)
+
+        printAsTable()
+    }
+
+    func rotateLeft() {
+        let x = selectedShape.coordinates()[0]
+        let y = selectedShape.coordinates()[1]
+        remove(x, y)
+        selectedShape.rotateLeft()
+        merge(x, y)
+
+        printAsTable()
+    }
+
+    func rotateRight() {
+        let x = selectedShape.coordinates()[0]
+        let y = selectedShape.coordinates()[1]
+        remove(x, y)
+        selectedShape.rotateRight()
+        merge(x, y)
 
         printAsTable()
     }
@@ -146,7 +177,9 @@ public protocol Shape {
 
 public final class ShapeA {
     
-    //private var currentPosition = Int(arc4random_uniform(4))
+    private var currentPosition = Int(arc4random_uniform(4))
+    private var x = 0
+    private var y = 0
 
     private let matrix = [
         [
@@ -179,7 +212,32 @@ public final class ShapeA {
     }
 
     func current() -> [[Int]] {
-        return matrix[1]
+        return matrix[currentPosition]
+    }
+
+    func coordinates() -> [Int] {
+        return [x, y]
+    }
+
+    func rotateLeft() {
+        currentPosition += 1
+
+        if currentPosition >= 4 {
+            currentPosition = 0
+        }
+    }
+
+    func rotateRight() {
+        currentPosition -= 1
+
+        if currentPosition < 0 {
+            currentPosition = 3
+        }
+    }
+
+    func setCoordinates(_ x: Int, _ y: Int) {
+        self.x = x
+        self.y = y
     }
 }
 
