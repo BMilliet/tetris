@@ -4,6 +4,9 @@ import ViewCode
 public final class TetrisGameViewController: UIViewController {
 
     private lazy var shapeB: ShapeB = ShapeB(.green)
+    private var matrix = [[Int]]()
+
+    private let board = Board()
 
     private lazy var boardView: UIView = {
         let board = UIView()
@@ -114,19 +117,26 @@ public final class TetrisGameViewController: UIViewController {
             height: shapeB.absHeight()
         )
 
-        Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(drop), userInfo: nil, repeats: true)
+        drawMatrix()
+
+        //Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(drop), userInfo: nil, repeats: true)
     }
 
     @objc func tapLeft() {
-        moveHorizontal(shape: shapeB, side: .left)
+        //moveHorizontal(shape: shapeB, side: .left)
+        board.moveLeft()
     }
 
     @objc func tapDown() {
-        //
+        //printAsTable(matrix)
+        //board.exec(3, 4)
+
+        board.moveDown()
     }
 
     @objc func tapRight() {
-        moveHorizontal(shape: shapeB, side: .right)
+        //moveHorizontal(shape: shapeB, side: .right)
+        board.moveRight()
     }
     
     @objc func rotateLeft() {
@@ -191,7 +201,41 @@ public final class TetrisGameViewController: UIViewController {
         animateMove(shape, from: shapeBufferX, to: newX, orientation: .horizontal, animated: animated)
     }
 
+    private func updateMatrix(shape: TetrisShape) {
+        let shapeMatrix = shape.getMatrix()
+    }
+
+    private func drawMatrix() {
+        let rows    = 25
+        let columns = 13
+
+        for _ in 0..<rows {
+            var row = [Int]()
+
+            for _ in 0..<columns {
+                row.append(0)
+            }
+
+            matrix.append(row)
+        }
+    }
+
+    private func printAsTable(_ matrix: [[Int]]) {
+
+        var line = ""
+        print("===========================")
+
+        matrix.forEach { row in
+            row.forEach {
+                line += "\($0) "
+            }
+            print(line)
+            line = ""
+        }
+    }
+
     @objc private func drop() {
+       // board.exec()
 //        let shapeValidHeight = shape.collisionHeight()
 //        let shapeBufferY = shape.frame.midY
 //        let shapeBufferHeight = shape.absHeight()

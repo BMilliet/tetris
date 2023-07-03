@@ -5,6 +5,7 @@ public protocol TetrisShape: UIView {
     func absHeight() -> CGFloat
     func collisionWidth() -> CGFloat
     func collisionHeight() -> CGFloat
+    func getMatrix() -> [[Int]]
 //    func rotateLeft(_ board: Board)
 //    func rotateRigth(_ board: Board)
 //    func moveLeft(_ boardWidth: CGFloat) -> CGFloat

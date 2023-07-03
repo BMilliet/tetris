@@ -119,8 +119,8 @@ public final class ShapeB: UIView, TetrisShape {
         render()
     }
 
-    func getMatrix() -> [[[Int]]] {
-        return matrix
+    public func getMatrix() -> [[Int]] {
+        return matrix[currentPosition]
     }
 
     public func absWidth() -> CGFloat {
