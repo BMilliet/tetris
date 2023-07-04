@@ -17,130 +17,103 @@ public final class Board {
 
     }
 
-    private func merge(_ x: Int, _ y: Int) {
+    private func merge(_ shape: Shape) {
+        let shapeMatrix = selectedShape.current()
+        let x = selectedShape.coordinates()[0]
+        let y = selectedShape.coordinates()[1]
 
-        for (ir, row) in matrix.enumerated() {
-
-            // found row
-            if ir == y {
-
-                for (ic, _) in row.enumerated() {
-
-                    // found column
-                    if ic == x {
-
-                        let shape = selectedShape.current()
-
-                        for (rowI, x) in shape.enumerated() {
-                            for (columnI, y) in x.enumerated() {
-                                if y != 0 {
-                                    matrix[ir + rowI][ic + columnI] = y
-                                }
-                            }
-                        }
-                    }
+        for (ir, row) in shapeMatrix.enumerated() {
+            for (ic, column) in row.enumerated() {
+                if column != 0 {
+                    matrix[ir + y][ic + x] = column
                 }
             }
         }
-
     }
 
-    func remove(_ x: Int, _ y: Int) {
+    func remove(_ shape: Shape) {
 
-        for (ir, row) in matrix.enumerated() {
+        let shapeMatrix = selectedShape.current()
+        let x = selectedShape.coordinates()[0]
+        let y = selectedShape.coordinates()[1]
 
-            // found row
-            if ir == y {
-
-                for (ic, _) in row.enumerated() {
-
-                    // found column
-                    // TODO: check if shape will fit
-                    if ic == x {
-
-                        let shape = selectedShape.current()
-
-                        for (rowI, x) in shape.enumerated() {
-                            for (columnI, y) in x.enumerated() {
-                                if y != 0 {
-                                    matrix[ir + rowI][ic + columnI] = 0
-                                }
-                            }
-                        }
-                    }
+        for (ir, row) in shapeMatrix.enumerated() {
+            for (ic, column) in row.enumerated() {
+                if column != 0 {
+                    matrix[ir + y][ic + x] = 0
                 }
             }
         }
     }
 
     func moveLeft() {
-        let x = selectedShape.coordinates()[0]
-        let y = selectedShape.coordinates()[1]
+        let shape = selectedShape
+        let x = shape.coordinates()[0]
+        let y = shape.coordinates()[1]
 
         let newX = x - 1
 
-        if newX < 0 {
+        if newX - shape.leftCollision() + shape.current().first!.count < 0 {
             printAsTable()
             return
         }
 
-        remove(x, y)
-        merge(newX, y)
-
-        selectedShape.setCoordinates(newX, y)
-
+        remove(shape)
+        shape.setCoordinates(newX, y)
+        merge(shape)
         printAsTable()
     }
 
     func moveRight() {
-        let x = selectedShape.coordinates()[0]
-        let y = selectedShape.coordinates()[1]
+        let shape = selectedShape
+        let x = shape.coordinates()[0]
+        let y = shape.coordinates()[1]
 
         let newX = x + 1
 
-        if newX + selectedShape.leftCollision() > COLUMNS {
+        if newX + shape.rightCollision() > COLUMNS {
             printAsTable()
             return
         }
 
-        remove(x, y)
-        merge(newX, y)
+        remove(shape)
 
-        selectedShape.setCoordinates(newX, y)
+        shape.setCoordinates(newX, y)
+        merge(shape)
 
         printAsTable()
     }
 
     func moveDown() {
-        let x = selectedShape.coordinates()[0]
-        let y = selectedShape.coordinates()[1]
+        let shape = selectedShape
+        let x = shape.coordinates()[0]
+        let y = shape.coordinates()[1]
 
         let newY = y + 1
 
-        remove(x, y)
-        merge(x, newY)
+        remove(shape)
 
-        selectedShape.setCoordinates(x, newY)
+        shape.setCoordinates(x, newY)
+        merge(shape)
+
 
         printAsTable()
     }
 
     func rotateLeft() {
-        let x = selectedShape.coordinates()[0]
-        let y = selectedShape.coordinates()[1]
-        remove(x, y)
+        let shape = selectedShape
+        remove(shape)
         selectedShape.rotateLeft()
-        merge(x, y)
+        merge(shape)
 
         printAsTable()
     }
 
     func rotateRight() {
-        let x = selectedShape.coordinates()[0]
-        let y = selectedShape.coordinates()[1]
-        remove(x, y)
+        let shape = selectedShape
+        remove(shape)
         selectedShape.rotateRight()
-        merge(x, y)
+        merge(shape)
 
         printAsTable()
     }
@@ -175,7 +148,7 @@ public final class Board {
     }
 
     func exec(_ x: Int, _ y: Int) {
-        merge(x, y)
+        //merge(x, y)
         printAsTable()
     }
 
@@ -186,9 +159,16 @@ public final class Board {
 
 public protocol Shape {
 
+    func current() -> [[Int]]
+    func coordinates() -> [Int]
+    func setCoordinates(_ x: Int, _ y: Int)
+    func rotateLeft()
+    func rotateRight()
+    func rightCollision() -> Int
+    func leftCollision() -> Int
 }
 
-public final class ShapeA {
+public final class ShapeA: Shape {
     
     private var currentPosition = Int(arc4random_uniform(4))
     private var x = 0
@@ -224,15 +204,15 @@ public final class ShapeA {
 
     }
 
-    func current() -> [[Int]] {
+    public func current() -> [[Int]] {
         return matrix[currentPosition]
     }
 
-    func coordinates() -> [Int] {
+    public func coordinates() -> [Int] {
         return [x, y]
     }
 
-    func rotateLeft() {
+    public func rotateLeft() {
         currentPosition += 1
 
         if currentPosition >= 4 {
@@ -240,7 +220,7 @@ public final class ShapeA {
         }
     }
 
-    func rotateRight() {
+    public func rotateRight() {
         currentPosition -= 1
 
         if currentPosition < 0 {
@@ -248,12 +228,12 @@ public final class ShapeA {
         }
     }
 
-    func setCoordinates(_ x: Int, _ y: Int) {
+    public func setCoordinates(_ x: Int, _ y: Int) {
         self.x = x
         self.y = y
     }
 
-    func leftCollision() -> Int {
+    public func rightCollision() -> Int {
         var len = [Int]()
 
         let currentMatrix = matrix[currentPosition]
@@ -263,6 +243,28 @@ public final class ShapeA {
             var l = 0
 
             for (i, x) in row.enumerated() {
+
+                if x == 1 {
+                    l = i+1
+                }
+            }
+
+            len.append(l)
+        }
+
+        return len.max()!
+    }
+
+    public func leftCollision() -> Int {
+        var len = [Int]()
+
+        let currentMatrix = matrix[currentPosition]
+
+
+        currentMatrix.forEach { row in
+            var l = 0
+
+            for (i, x) in row.reversed().enumerated() {
 
                 if x == 1 {
                     l = i+1
