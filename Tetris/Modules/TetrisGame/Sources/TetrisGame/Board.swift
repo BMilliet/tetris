@@ -4,10 +4,9 @@ public final class Board {
     
     private var matrix = [[Int]]()
     private var selectedShape: ShapeProtocol = ShapeA()
-    private var shouldCreateNewShape = false
 
-    private let COLUMNS = 13
-    private let ROWS = 26
+    private let COLUMNS = BOARDMATRIX_POS.first!
+    private let ROWS = BOARDMATRIX_POS.last!
 
     init() {
         drawMatrix()
@@ -15,7 +14,6 @@ public final class Board {
 
     private func createNewShape() {
         selectedShape = ShapeA()
-        shouldCreateNewShape = false
     }
 
     func getMatrix() -> [[Int]] {
@@ -75,6 +73,15 @@ public final class Board {
                 let newX = ic + x
                 let newY = ir + y
 
+                // collide with another shape
+                if newY > 0 && newY <= BOARDMATRIX_POS.last! - 1 && newX > 0 && newX <= BOARDMATRIX_POS.first! - 1 {
+                    let currentPoint = matrix[newY][newX]
+
+                    if currentPoint != 0 && column != 0 {
+                        return .anotherShape
+                    }
+                }
+
                 // collide left wall
                 if newX < 0 && column != 0 {
                     return .leftWall
@@ -87,7 +94,6 @@ public final class Board {
 
                 // collide floor
                 if newY >= ROWS && column != 0 {
-                    shouldCreateNewShape = true
                     return .floor
                 }
             }
@@ -100,18 +106,20 @@ public final class Board {
         let shape = selectedShape
         let x = shape.coordinates()[0]
         let y = shape.coordinates()[1]
+        remove(shape)
 
         let newX = x - 1
 
         let copy = shape.copy()
         copy.setCoordinates(newX, y)
 
+
         if collide(copy) != .none {
-            return
+            shape.setCoordinates(x, y)
+        } else {
+            shape.setCoordinates(newX, y)
         }
 
-        remove(shape)
-        shape.setCoordinates(newX, y)
         merge(shape)
         printAsTable()
     }
@@ -120,6 +128,7 @@ public final class Board {
         let shape = selectedShape
         let x = shape.coordinates()[0]
         let y = shape.coordinates()[1]
+        remove(shape)
 
         let newX = x + 1
 
@@ -127,21 +136,19 @@ public final class Board {
         copy.setCoordinates(newX, y)
 
         if collide(copy) != .none {
-            return
+            shape.setCoordinates(x, y)
+        } else {
+            shape.setCoordinates(newX, y)
         }
 
-        remove(shape)
-
-        shape.setCoordinates(newX, y)
         merge(shape)
-
-        printAsTable()
     }
 
     func moveDown() {
         let shape = selectedShape
         let x = shape.coordinates()[0]
         let y = shape.coordinates()[1]
+        remove(shape)
 
         let newY = y + 1
 
@@ -150,15 +157,14 @@ public final class Board {
 
         switch collide(copy) {
         case .floor, .anotherShape:
-            if shouldCreateNewShape {
-                createNewShape()
-            }
+            shape.setCoordinates(x, y)
+            merge(shape)
+            createNewShape()
             return
         default:
             break
         }
 
-        remove(shape)
 
         shape.setCoordinates(x, newY)
         merge(shape)
@@ -170,11 +176,13 @@ public final class Board {
     func rotateLeft() {
         let shape = selectedShape
         let copy = shape.copy()
+        remove(shape)
 
         copy.rotateLeft()
 
         switch collide(copy) {
         case .floor, .anotherShape:
+            merge(shape)
             return
         case .leftWall:
             moveRight()
@@ -184,7 +192,6 @@ public final class Board {
             break
         }
 
-        remove(shape)
         shape.rotateLeft()
         merge(shape)
 
@@ -194,11 +201,13 @@ public final class Board {
     func rotateRight() {
         let shape = selectedShape
         let copy = shape.copy()
+        remove(shape)
 
         copy.rotateRight()
 
         switch collide(copy) {
         case .floor, .anotherShape:
+            merge(shape)
             return
         case .leftWall:
             moveRight()
@@ -208,7 +217,6 @@ public final class Board {
             break
         }
 
-        remove(shape)
         shape.rotateRight()
         merge(shape)
 
