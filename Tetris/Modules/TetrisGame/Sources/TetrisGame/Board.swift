@@ -18,29 +18,40 @@ public final class Board {
     }
 
     private func merge(_ shape: Shape) {
-        let shapeMatrix = selectedShape.current()
-        let x = selectedShape.coordinates()[0]
-        let y = selectedShape.coordinates()[1]
+        let shapeMatrix = shape.current()
+        let x = shape.coordinates()[0]
+        let y = shape.coordinates()[1]
 
         for (ir, row) in shapeMatrix.enumerated() {
             for (ic, column) in row.enumerated() {
                 if column != 0 {
-                    matrix[ir + y][ic + x] = column
+
+                    let newX = ic + x
+                    let newY = ir + y
+
+                    if newX >= 0 && newY >= 0 && newX <= COLUMNS-1 && newY <= ROWS-1 {
+                        matrix[newY][newX] = column
+                    }
                 }
             }
         }
     }
 
     func remove(_ shape: Shape) {
-
-        let shapeMatrix = selectedShape.current()
-        let x = selectedShape.coordinates()[0]
-        let y = selectedShape.coordinates()[1]
+        let shapeMatrix = shape.current()
+        let x = shape.coordinates()[0]
+        let y = shape.coordinates()[1]
 
         for (ir, row) in shapeMatrix.enumerated() {
             for (ic, column) in row.enumerated() {
                 if column != 0 {
-                    matrix[ir + y][ic + x] = 0
+
+                    let newX = ic + x
+                    let newY = ir + y
+
+                    if newX >= 0 && newY >= 0 && newX <= COLUMNS-1 && newY <= ROWS-1 {
+                        matrix[newY][newX] = 0
+                    }
                 }
             }
         }
@@ -53,10 +64,10 @@ public final class Board {
 
         let newX = x - 1
 
-        if newX - shape.leftCollision() + shape.current().first!.count < 0 {
-            printAsTable()
-            return
-        }
+//        if newX - shape.leftCollision() + shape.current().first!.count < 0 {
+//            printAsTable()
+//            return
+//        }
 
         remove(shape)
         shape.setCoordinates(newX, y)
@@ -71,10 +82,10 @@ public final class Board {
 
         let newX = x + 1
 
-        if newX + shape.rightCollision() > COLUMNS {
-            printAsTable()
-            return
-        }
+//        if newX + shape.rightCollision() > COLUMNS {
+//            printAsTable()
+//            return
+//        }
 
         remove(shape)
 
