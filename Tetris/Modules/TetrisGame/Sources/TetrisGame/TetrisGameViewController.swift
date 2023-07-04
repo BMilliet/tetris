@@ -16,8 +16,14 @@ public final class TetrisGameViewController: UIViewController {
         board.backgroundColor = .black
         return board
     }()
-    
-    // MARK: CONTROLS
+
+    private lazy var pointsLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.textAlignment = .center
+        label.text = "0"
+        return label
+    }()
     
     private lazy var controlPanel: UIView = {
         let panel = UIView()
@@ -91,6 +97,11 @@ public final class TetrisGameViewController: UIViewController {
         controlPanel.addSubview(buttonRight)
         controlPanel.addSubview(rotateLeftButton)
         controlPanel.addSubview(rotateRightButton)
+        controlPanel.addSubview(pointsLabel)
+
+        pointsLabel.anchor(bottom: controlPanel.topAnchor, paddingBottom: 8)
+        pointsLabel.centerXEqual(to: controlPanel)
+        pointsLabel.size(height: 60, width: 100)
         
         rotateLeftButton.centerYEqual(to: controlPanel)
         rotateRightButton.centerYEqual(to: controlPanel)
@@ -139,6 +150,9 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     private func render() {
+        board.removeRowIfPossible()
+        pointsLabel.text = "\(board.getPoints())"
+
         let matrix = board.getMatrix()
 
         boardView.subviews.forEach { $0.removeFromSuperview() }

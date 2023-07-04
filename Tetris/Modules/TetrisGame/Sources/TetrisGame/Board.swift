@@ -6,6 +6,8 @@ public final class Board {
     private var matrix = [[Int]]()
     private var selectedShape: ShapeProtocol = ShapeA()
 
+    private var points = 0
+
     private let COLUMNS = BOARDMATRIX_POS.first!
     private let ROWS = BOARDMATRIX_POS.last!
 
@@ -13,14 +15,13 @@ public final class Board {
         drawMatrix()
     }
 
-    private func createNewShape() {
-        selectedShape = ShapeA()
-    }
-
     func getMatrix() -> [[Int]] {
         return matrix
     }
 
+    func getPoints() -> Int {
+        return points
+    }
 
     func moveLeft(_ value: Int) {
         let shape = selectedShape
@@ -101,6 +102,33 @@ public final class Board {
         matrix = matrixHandler.remove(shape, matrix)
         shape.rotateRight()
         matrix = matrixHandler.merge(shape, matrix)
+    }
+
+    private func createNewShape() {
+        // TODO: create random
+        selectedShape = ShapeA()
+    }
+
+    func removeRowIfPossible() {
+        var toRemove = [Int]()
+
+        for (i, row) in matrix.enumerated() {
+            if row.allSatisfy({ $0 != 0 }) {
+                toRemove.append(i)
+            }
+        }
+
+        toRemove.forEach { _ in
+            matrix.insert(Array(repeating: 0, count: COLUMNS), at: 0)
+        }
+
+        toRemove.forEach {
+            matrix.remove(at: $0 + toRemove.count)
+        }
+
+        points += 10 * toRemove.count
+
+        print(points)
     }
 
     private func horizontalMove(_ shape: ShapeProtocol, x: Int, y: Int) {

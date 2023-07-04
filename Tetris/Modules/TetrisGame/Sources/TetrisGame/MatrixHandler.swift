@@ -54,6 +54,7 @@ struct MatrixHandler {
         let x = shape.coordinates()[0]
         let y = shape.coordinates()[1]
 
+        // could not render shape properly
         if !validMatrix(shapeMatrix) {
             return .invalid
         }
