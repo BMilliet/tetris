@@ -5,6 +5,9 @@ public final class Board {
     private var matrix = [[Int]]()
     private var selectedShape = ShapeA()
 
+    private let COLUMNS = 13
+    private let ROWS = 25
+
     init() {
         drawMatrix()
         selectedShape.setCoordinates(4, 16)
@@ -76,6 +79,11 @@ public final class Board {
 
         let newX = x - 1
 
+        if newX < 0 {
+            printAsTable()
+            return
+        }
+
         remove(x, y)
         merge(newX, y)
 
@@ -89,6 +97,11 @@ public final class Board {
         let y = selectedShape.coordinates()[1]
 
         let newX = x + 1
+
+        if newX + selectedShape.leftCollision() > COLUMNS {
+            printAsTable()
+            return
+        }
 
         remove(x, y)
         merge(newX, y)
@@ -133,8 +146,8 @@ public final class Board {
     }
 
     private func drawMatrix() {
-        let rows    = 25
-        let columns = 13
+        let rows    = ROWS
+        let columns = COLUMNS
 
         for _ in 0..<rows {
             var row = [Int]()
@@ -238,6 +251,28 @@ public final class ShapeA {
     func setCoordinates(_ x: Int, _ y: Int) {
         self.x = x
         self.y = y
+    }
+
+    func leftCollision() -> Int {
+        var len = [Int]()
+
+        let currentMatrix = matrix[currentPosition]
+
+
+        currentMatrix.forEach { row in
+            var l = 0
+
+            for (i, x) in row.enumerated() {
+
+                if x == 1 {
+                    l = i+1
+                }
+            }
+
+            len.append(l)
+        }
+
+        return len.max()!
     }
 }
 
