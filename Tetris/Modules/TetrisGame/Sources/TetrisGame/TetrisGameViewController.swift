@@ -84,7 +84,7 @@ public final class TetrisGameViewController: UIViewController {
         
         arena.addSubview(boardView)
         boardView.centerXYEqual(to: arena)
-        boardView.size(height: 640, width: 326)
+        boardView.size(height: 649, width: 326)
         
         controlPanel.addSubview(buttonLeft)
         controlPanel.addSubview(buttonDown)
@@ -105,7 +105,7 @@ public final class TetrisGameViewController: UIViewController {
         buttonLeft.anchor(trailing: buttonDown.leadingAnchor, paddingRight: 10)
         buttonRight.anchor(leading: buttonDown.trailingAnchor, paddingLeft: 10)
 
-        //Timer.scheduledTimer(timeInterval: 1.2, target: self, selector: #selector(drop), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(drop), userInfo: nil, repeats: true)
     }
 
     @objc func tapLeft() {
@@ -134,6 +134,7 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     @objc private func drop() {
+        board.moveDown()
         render()
     }
 

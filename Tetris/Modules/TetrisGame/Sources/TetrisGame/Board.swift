@@ -6,11 +6,11 @@ public final class Board {
     private var selectedShape = ShapeA()
 
     private let COLUMNS = 13
-    private let ROWS = 25
+    private let ROWS = 26
 
     init() {
         drawMatrix()
-        selectedShape.setCoordinates(4, 16)
+        selectedShape.setCoordinates(5, -1)
     }
 
     private func createNewShape() {
@@ -61,6 +61,39 @@ public final class Board {
         }
     }
 
+    func collide(_ shape: Shape) -> Bool {
+        let shapeMatrix = shape.current()
+        let x = shape.coordinates()[0]
+        let y = shape.coordinates()[1]
+
+        print(shape)
+
+        for (ir, row) in shapeMatrix.enumerated() {
+            for (ic, column) in row.enumerated() {
+
+                let newX = ic + x
+                let newY = ir + y
+
+                // collide left wall
+                if newX < 0 && column != 0 {
+                    return true
+                }
+
+                // collide right wall
+                if newX >= COLUMNS-1 && column != 0 {
+                    return true
+                }
+
+                // collide down
+                if newY >= ROWS-1 && column != 0 {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+
     func moveLeft() {
         let shape = selectedShape
         let x = shape.coordinates()[0]
@@ -72,6 +105,13 @@ public final class Board {
 //            printAsTable()
 //            return
 //        }
+
+        let copy = shape.copy()
+        copy.setCoordinates(newX, y)
+
+        if collide(copy) {
+            return
+        }
 
         remove(shape)
         shape.setCoordinates(newX, y)
@@ -91,6 +131,10 @@ public final class Board {
 //            return
 //        }
 
+        if collide(shape) {
+            return
+        }
+
         remove(shape)
 
         shape.setCoordinates(newX, y)
@@ -105,6 +149,10 @@ public final class Board {
         let y = shape.coordinates()[1]
 
         let newY = y + 1
+
+        if collide(shape) {
+            return
+        }
 
         remove(shape)
 
@@ -150,16 +198,16 @@ public final class Board {
 
     private func printAsTable() {
 
-        var line = ""
-        print("===========================")
-
-        matrix.forEach { row in
-            row.forEach {
-                line += "\($0) "
-            }
-            print(line)
-            line = ""
-        }
+//        var line = ""
+//        print("===========================")
+//
+//        matrix.forEach { row in
+//            row.forEach {
+//                line += "\($0) "
+//            }
+//            print(line)
+//            line = ""
+//        }
     }
 
     func exec(_ x: Int, _ y: Int) {
@@ -173,7 +221,6 @@ public final class Board {
 }
 
 public protocol Shape {
-
     func current() -> [[Int]]
     func coordinates() -> [Int]
     func setCoordinates(_ x: Int, _ y: Int)
@@ -181,13 +228,23 @@ public protocol Shape {
     func rotateRight()
     func rightCollision() -> Int
     func leftCollision() -> Int
+    func copy() -> Shape
+    func setPosition(_ int: Int)
 }
 
-public final class ShapeA: Shape {
-    
+public final class ShapeA: Shape, CustomStringConvertible {
+
     private var currentPosition = Int(arc4random_uniform(4))
     private var x = 0
     private var y = 0
+
+    public var description: String {
+        let pos = "position: \(currentPosition)"
+        let x = "x: \(x)"
+        let y = "y: \(y)"
+
+        return [pos, x, y].joined(separator: "\n")
+    }
 
     private let matrix = [
         [
@@ -217,6 +274,18 @@ public final class ShapeA: Shape {
 
     init() {
 
+    }
+
+    public func copy() -> Shape {
+        let copy = ShapeA()
+        copy.x = self.x
+        copy.y = self.y
+        copy.setPosition(self.currentPosition)
+        return copy
+    }
+
+    public func setPosition(_ int: Int) {
+        self.currentPosition = int
     }
 
     public func current() -> [[Int]] {
