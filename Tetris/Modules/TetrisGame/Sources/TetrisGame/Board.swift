@@ -17,6 +17,10 @@ public final class Board {
 
     }
 
+    func getMatrix() -> [[Int]] {
+        return matrix
+    }
+
     private func merge(_ shape: Shape) {
         let shapeMatrix = shape.current()
         let x = shape.coordinates()[0]

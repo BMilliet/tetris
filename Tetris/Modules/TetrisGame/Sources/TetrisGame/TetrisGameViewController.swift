@@ -110,24 +110,50 @@ public final class TetrisGameViewController: UIViewController {
 
     @objc func tapLeft() {
         board.moveLeft()
+        render()
     }
 
     @objc func tapDown() {
         board.moveDown()
+        render()
     }
 
     @objc func tapRight() {
         board.moveRight()
+        render()
     }
     
     @objc func rotateLeft() {
         board.rotateLeft()
+        render()
     }
     
     @objc func rotateRight() {
         board.rotateRight()
+        render()
     }
 
     @objc private func drop() {
+        render()
+    }
+
+    private func render() {
+        let matrix = board.getMatrix()
+
+        boardView.subviews.forEach { $0.removeFromSuperview() }
+
+        for (ir, row) in matrix.enumerated() {
+            for (ic, column) in row.enumerated() {
+                if column != 0 {
+                    let x = CGFloat(ic) * CUBE_SIZE
+                    let y = CGFloat(ir) * CUBE_SIZE
+
+                    let newCube = Cube()
+
+                    boardView.addSubview(newCube)
+                    newCube.frame = CGRect(x: x, y: y, width: CUBE_SIZE, height: CUBE_SIZE)
+                }
+            }
+        }
     }
 }
