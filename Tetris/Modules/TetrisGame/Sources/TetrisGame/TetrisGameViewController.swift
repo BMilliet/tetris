@@ -105,7 +105,7 @@ public final class TetrisGameViewController: UIViewController {
         buttonLeft.anchor(trailing: buttonDown.leadingAnchor, paddingRight: 10)
         buttonRight.anchor(leading: buttonDown.trailingAnchor, paddingLeft: 10)
 
-        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(drop), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: 0.8, target: self, selector: #selector(drop), userInfo: nil, repeats: true)
     }
 
     @objc func tapLeft() {
@@ -149,7 +149,7 @@ public final class TetrisGameViewController: UIViewController {
                     let x = CGFloat(ic) * CUBE_SIZE
                     let y = CGFloat(ir) * CUBE_SIZE
 
-                    let newCube = Cube()
+                    let newCube = Cube(color: Colors.get(column))
 
                     boardView.addSubview(newCube)
                     newCube.frame = CGRect(x: x, y: y, width: CUBE_SIZE, height: CUBE_SIZE)

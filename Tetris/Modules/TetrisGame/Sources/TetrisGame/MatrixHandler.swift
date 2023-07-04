@@ -54,6 +54,10 @@ struct MatrixHandler {
         let x = shape.coordinates()[0]
         let y = shape.coordinates()[1]
 
+        if !validMatrix(shapeMatrix) {
+            return .invalid
+        }
+
         print(shape)
 
         for (ir, row) in shapeMatrix.enumerated() {
@@ -89,5 +93,15 @@ struct MatrixHandler {
         }
 
         return .none
+    }
+
+    private func validMatrix(_ matrix: [[Int]]) -> Bool {
+        var bools = [Bool]()
+
+        matrix.forEach { row in
+            bools.append(row.allSatisfy { $0 == 0 })
+        }
+
+        return bools.contains(false)
     }
 }

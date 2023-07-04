@@ -51,9 +51,9 @@ public final class Board {
         let newY = y + 1
 
         let copy = shape.copy()
+        matrixCopy = matrixHandler.remove(copy, matrixCopy)
         copy.setCoordinates(x, newY)
 
-        matrixCopy = matrixHandler.remove(shape, matrixCopy)
 
         switch matrixHandler.collide(copy, matrixCopy) {
         case .floor, .anotherShape:
@@ -106,10 +106,18 @@ public final class Board {
     private func horizontalMove(_ shape: ShapeProtocol, x: Int, y: Int) {
         let copy = shape.copy()
         var matrixCopy = matrix
+        
+        matrixCopy = matrixHandler.remove(copy, matrixCopy)
         copy.setCoordinates(x, y)
 
-        matrixCopy = matrixHandler.remove(shape, matrixCopy)
-        if matrixHandler.collide(copy, matrixCopy) != .none {
+        let collision = matrixHandler.collide(copy, matrixCopy)
+
+        print(collision)
+        print(x)
+        print(y)
+        print("======")
+
+        if collision != .none {
             return
         }
 

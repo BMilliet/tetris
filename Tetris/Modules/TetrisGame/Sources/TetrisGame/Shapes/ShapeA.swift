@@ -2,9 +2,36 @@ import Foundation
 
 public final class ShapeA: ShapeProtocol, CustomStringConvertible {
 
-    private var currentPosition = Int(arc4random_uniform(4))
+    private var currentPosition: Int
+    private let color: Int
     private var x = 0
     private var y = 0
+
+    private lazy var matrix: [[[Int]]] = [
+            [
+                [0,0,0],
+                [color,color,color],
+                [0,color,0]
+            ],
+
+            [
+                [0,color,0],
+                [color,color,0],
+                [0,color,0]
+            ],
+
+            [
+                [0,color,0],
+                [color,color,color],
+                [0,0,0]
+            ],
+
+            [
+                [0,color,0],
+                [0,color,color],
+                [0,color,0]
+            ]
+        ]
 
     public var description: String {
         let pos = "position: \(currentPosition)"
@@ -14,35 +41,11 @@ public final class ShapeA: ShapeProtocol, CustomStringConvertible {
         return [pos, x, y].joined(separator: "\n")
     }
 
-    private let matrix = [
-        [
-            [0,0,0],
-            [1,1,1],
-            [0,1,0]
-        ],
-
-        [
-            [0,1,0],
-            [1,1,0],
-            [0,1,0]
-        ],
-
-        [
-            [0,1,0],
-            [1,1,1],
-            [0,0,0]
-        ],
-
-        [
-            [0,1,0],
-            [0,1,1],
-            [0,1,0]
-        ]
-    ]
-
     init() {
         let x = SHAPE_POS.first!
         let y = SHAPE_POS.last!
+        currentPosition = Int(arc4random_uniform(4))
+        color = Int(arc4random_uniform(8))
         setCoordinates(x, y)
     }
 
@@ -85,49 +88,5 @@ public final class ShapeA: ShapeProtocol, CustomStringConvertible {
     public func setCoordinates(_ x: Int, _ y: Int) {
         self.x = x
         self.y = y
-    }
-
-    public func rightCollision() -> Int {
-        var len = [Int]()
-
-        let currentMatrix = matrix[currentPosition]
-
-
-        currentMatrix.forEach { row in
-            var l = 0
-
-            for (i, x) in row.enumerated() {
-
-                if x == 1 {
-                    l = i+1
-                }
-            }
-
-            len.append(l)
-        }
-
-        return len.max()!
-    }
-
-    public func leftCollision() -> Int {
-        var len = [Int]()
-
-        let currentMatrix = matrix[currentPosition]
-
-
-        currentMatrix.forEach { row in
-            var l = 0
-
-            for (i, x) in row.reversed().enumerated() {
-
-                if x == 1 {
-                    l = i+1
-                }
-            }
-
-            len.append(l)
-        }
-
-        return len.max()!
     }
 }
