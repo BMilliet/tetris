@@ -109,7 +109,7 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     @objc func tapLeft() {
-        board.moveLeft()
+        board.moveLeft(1)
         render()
     }
 
@@ -119,7 +119,7 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     @objc func tapRight() {
-        board.moveRight()
+        board.moveRight(1)
         render()
     }
     
