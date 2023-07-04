@@ -62,7 +62,7 @@ public final class Board {
         }
     }
 
-    func collide(_ shape: ShapeProtocol) -> Bool {
+    func collide(_ shape: ShapeProtocol) -> CollisionTypes {
         let shapeMatrix = shape.current()
         let x = shape.coordinates()[0]
         let y = shape.coordinates()[1]
@@ -77,23 +77,23 @@ public final class Board {
 
                 // collide left wall
                 if newX < 0 && column != 0 {
-                    return true
+                    return .leftWall
                 }
 
                 // collide right wall
-                if newX >= COLUMNS-1 && column != 0 {
-                    return true
+                if newX >= COLUMNS && column != 0 {
+                    return .rightWall
                 }
 
                 // collide floor
-                if newY >= ROWS-1 && column != 0 {
+                if newY >= ROWS && column != 0 {
                     shouldCreateNewShape = true
-                    return true
+                    return .floor
                 }
             }
         }
 
-        return false
+        return .none
     }
 
     func moveLeft() {
@@ -106,7 +106,7 @@ public final class Board {
         let copy = shape.copy()
         copy.setCoordinates(newX, y)
 
-        if collide(copy) {
+        if collide(copy) != .none {
             return
         }
 
@@ -123,7 +123,10 @@ public final class Board {
 
         let newX = x + 1
 
-        if collide(shape) {
+        let copy = shape.copy()
+        copy.setCoordinates(newX, y)
+
+        if collide(copy) != .none {
             return
         }
 
@@ -142,11 +145,17 @@ public final class Board {
 
         let newY = y + 1
 
-        if collide(shape) {
+        let copy = shape.copy()
+        copy.setCoordinates(x, newY)
+
+        switch collide(copy) {
+        case .floor, .anotherShape:
             if shouldCreateNewShape {
                 createNewShape()
             }
             return
+        default:
+            break
         }
 
         remove(shape)
@@ -160,8 +169,23 @@ public final class Board {
 
     func rotateLeft() {
         let shape = selectedShape
+        let copy = shape.copy()
+
+        copy.rotateLeft()
+
+        switch collide(copy) {
+        case .floor, .anotherShape:
+            return
+        case .leftWall:
+            moveRight()
+        case .rightWall:
+            moveLeft()
+        default:
+            break
+        }
+
         remove(shape)
-        selectedShape.rotateLeft()
+        shape.rotateLeft()
         merge(shape)
 
         printAsTable()
@@ -169,8 +193,23 @@ public final class Board {
 
     func rotateRight() {
         let shape = selectedShape
+        let copy = shape.copy()
+
+        copy.rotateRight()
+
+        switch collide(copy) {
+        case .floor, .anotherShape:
+            return
+        case .leftWall:
+            moveRight()
+        case .rightWall:
+            moveLeft()
+        default:
+            break
+        }
+
         remove(shape)
-        selectedShape.rotateRight()
+        shape.rotateRight()
         merge(shape)
 
         printAsTable()
