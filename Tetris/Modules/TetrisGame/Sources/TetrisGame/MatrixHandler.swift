@@ -49,6 +49,7 @@ struct MatrixHandler {
         return newMatrix
     }
 
+    // TODO: still a bug in bottom collision...
     func collide(_ shape: ShapeProtocol, _ matrix: [[Int]]) -> CollisionTypes {
         let shapeMatrix = shape.current()
         let x = shape.coordinates()[0]

@@ -55,10 +55,15 @@ public final class Board {
         matrixCopy = matrixHandler.remove(copy, matrixCopy)
         copy.setCoordinates(x, newY)
 
+        let collision = matrixHandler.collide(copy, matrixCopy)
 
-        switch matrixHandler.collide(copy, matrixCopy) {
+        print(collision)
+
+        switch collision {
         case .floor, .anotherShape:
             createNewShape()
+            return
+        case .invalid:
             return
         default:
             break
