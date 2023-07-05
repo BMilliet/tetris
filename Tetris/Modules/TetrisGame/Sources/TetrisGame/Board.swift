@@ -110,8 +110,7 @@ public final class Board {
     }
 
     private func createNewShape() {
-        // TODO: create random
-        selectedShape = ShapeA()
+        selectedShape = ShapeGen.get()
     }
 
     func removeRowIfPossible() {
@@ -132,8 +131,6 @@ public final class Board {
         }
 
         points += 10 * toRemove.count
-
-        print(points)
     }
 
     private func horizontalMove(_ shape: ShapeProtocol, x: Int, y: Int) {
@@ -146,8 +143,6 @@ public final class Board {
         let collision = matrixHandler.collide(copy, matrixCopy)
 
         print(collision)
-        print(x)
-        print(y)
         print("======")
 
         if collision != .none {

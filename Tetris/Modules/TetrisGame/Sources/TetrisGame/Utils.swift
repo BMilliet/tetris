@@ -35,3 +35,28 @@ public enum Colors {
         }
     }
 }
+
+public enum ShapeGen {
+    static func get() -> ShapeProtocol {
+        let n = Int(arc4random_uniform(6))
+
+        switch n {
+        case 0:
+            return ShapeA()
+        case 1:
+            return ShapeB()
+        case 2:
+            return ShapeC()
+        case 3:
+            return ShapeD()
+        case 4:
+            return ShapeE()
+        case 5:
+            return ShapeF()
+        case 6:
+            return ShapeG()
+        default:
+            return ShapeA()
+        }
+    }
+}
