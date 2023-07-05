@@ -5,6 +5,9 @@ public let SHAPE_POS: [Int]         = [5, -2]
 public let BOARDVIEW_POS: [CGFloat] = [326, 649]
 public let BOARDMATRIX_POS: [Int]   = [13, 26]
 
+// switch to debug mode
+public let debug: Bool = true
+
 public enum CollisionTypes {
     case leftWall, rightWall, floor, anotherShape, none, invalid
 }
@@ -36,8 +39,8 @@ public enum Colors {
     }
 }
 
-public enum ShapeGen {
-    static func get() -> ShapeProtocol {
+public enum ShapeUtils {
+    static func random() -> ShapeProtocol {
         let n = Int(arc4random_uniform(6))
 
         switch n {
@@ -57,6 +60,19 @@ public enum ShapeGen {
             return ShapeG()
         default:
             return ShapeA()
+        }
+    }
+
+    static func printAsTable(_ m: [[Int]]) {
+        var line = ""
+        print("===========================")
+
+        m.forEach { row in
+            row.forEach {
+                line += "\($0) "
+            }
+            print(line)
+            line = ""
         }
     }
 }

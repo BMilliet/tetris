@@ -60,7 +60,9 @@ struct MatrixHandler {
             return .invalid
         }
 
-        print(shape)
+        if debug {
+            print(shape)
+        }
 
         for (ir, row) in shapeMatrix.enumerated() {
             for (ic, column) in row.enumerated() {

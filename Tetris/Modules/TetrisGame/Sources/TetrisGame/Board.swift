@@ -57,7 +57,10 @@ public final class Board {
 
         let collision = matrixHandler.collide(copy, matrixCopy)
 
-        print(collision)
+        if debug {
+            print(collision)
+            print("=== vertical ===")
+        }
 
         switch collision {
         case .floor, .anotherShape:
@@ -110,7 +113,7 @@ public final class Board {
     }
 
     private func createNewShape() {
-        selectedShape = ShapeGen.get()
+        selectedShape = ShapeUtils.random()
     }
 
     func removeRowIfPossible() {
@@ -142,8 +145,10 @@ public final class Board {
 
         let collision = matrixHandler.collide(copy, matrixCopy)
 
-        print(collision)
-        print("======")
+        if debug {
+            print(collision)
+            print("=== horizontal ===")
+        }
 
         if collision != .none {
             return
@@ -166,19 +171,6 @@ public final class Board {
             }
 
             matrix.append(row)
-        }
-    }
-
-    private func printAsTable() {
-        var line = ""
-        print("===========================")
-
-        matrix.forEach { row in
-            row.forEach {
-                line += "\($0) "
-            }
-            print(line)
-            line = ""
         }
     }
 }

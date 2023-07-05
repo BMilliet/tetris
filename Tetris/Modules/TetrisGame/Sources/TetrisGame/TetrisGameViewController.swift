@@ -34,47 +34,56 @@ public final class TetrisGameViewController: UIViewController {
     
     private lazy var buttonDown: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .systemPink
+        button.backgroundColor = .darkGray
         button.size(height: 50, width: 50)
+        button.setImage(UIImage(systemName: "arrow.down")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(tapDown), for: .touchUpInside)
         return button
     }()
     
     private lazy var buttonRight: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .systemPink
+        button.backgroundColor = .darkGray
         button.size(height: 50, width: 50)
+        button.setImage(UIImage(systemName: "arrow.right")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(tapRight), for: .touchUpInside)
         return button
     }()
     
     private lazy var buttonLeft: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .gray
+        button.backgroundColor = .darkGray
         button.size(height: 50, width: 50)
+        button.setImage(UIImage(systemName: "arrow.left")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(tapLeft), for: .touchUpInside)
         return button
     }()
     
     private lazy var rotateLeftButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .red
+        button.backgroundColor = .darkGray
         button.size(height: 50, width: 50)
+        button.setImage(UIImage(systemName: "arrow.uturn.right")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(rotateLeft), for: .touchUpInside)
         return button
     }()
     
     private lazy var rotateRightButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .red
+        button.backgroundColor = .darkGray
         button.size(height: 50, width: 50)
+        button.setImage(UIImage(systemName: "arrow.uturn.left")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        button.layer.cornerRadius = 10
         button.addTarget(self, action: #selector(rotateRight), for: .touchUpInside)
         return button
     }()
     
     private lazy var stack: UIStackView = {
         let st = UIStackView()
-        st.backgroundColor = .red
         st.axis = .vertical
         return st
     }()

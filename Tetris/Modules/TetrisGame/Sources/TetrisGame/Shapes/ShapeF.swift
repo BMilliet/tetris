@@ -38,6 +38,7 @@ public final class ShapeF: ShapeProtocol, CustomStringConvertible {
         let x = "x: \(x)"
         let y = "y: \(y)"
 
+        ShapeUtils.printAsTable(matrix[currentPosition])
         return [pos, x, y].joined(separator: "\n")
     }
 
