@@ -46,7 +46,7 @@ public final class ShapeA: ShapeProtocol, CustomStringConvertible {
         let x = SHAPE_POS.first!
         let y = SHAPE_POS.last!
         currentPosition = Int(arc4random_uniform(4))
-        color = Int(arc4random_uniform(8))
+        color = Int(arc4random_uniform(8)) + 1
         setCoordinates(x, y)
     }
 

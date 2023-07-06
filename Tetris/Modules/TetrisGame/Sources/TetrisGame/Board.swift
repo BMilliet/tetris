@@ -2,17 +2,19 @@ import UIKit
 
 public final class Board {
 
-    private let matrixHandler = MatrixHandler()
-    private var matrix = [[Int]]()
-    private var selectedShape: ShapeProtocol = ShapeA()
-
-    private var points = 0
-
+    private lazy var selectedShape: ShapeProtocol = ShapeA()
     private let COLUMNS = BOARDMATRIX_POS.first!
     private let ROWS = BOARDMATRIX_POS.last!
+    private let matrixHandler = MatrixHandler()
+
+    private var matrix = [[Int]]()
+    private var points = 0
+
+    var gameOver = false
 
     init() {
         drawMatrix()
+        createNewShape()
     }
 
     func getMatrix() -> [[Int]] {
@@ -64,6 +66,7 @@ public final class Board {
 
         switch collision {
         case .floor, .anotherShape:
+            checkGameStatus()
             createNewShape()
             return
         case .invalid:
@@ -112,10 +115,6 @@ public final class Board {
         matrix = matrixHandler.merge(shape, matrix)
     }
 
-    private func createNewShape() {
-        selectedShape = ShapeUtils.random()
-    }
-
     func removeRowIfPossible() {
         var toRemove = [Int]()
 
@@ -134,6 +133,14 @@ public final class Board {
         }
 
         points += 10 * toRemove.count
+    }
+
+    private func createNewShape() {
+        selectedShape = ShapeUtils.random()
+    }
+
+    private func checkGameStatus() {
+        gameOver = selectedShape.coordinates()[1] < 0
     }
 
     private func horizontalMove(_ shape: ShapeProtocol, x: Int, y: Int) {
