@@ -51,10 +51,9 @@ public final class ShapeG: ShapeProtocol, CustomStringConvertible {
     }
 
     public func copy() -> ShapeProtocol {
-        let copy = ShapeG()
+        let copy = ShapeG(currentPosition: currentPosition, color: color)
         copy.x = self.x
         copy.y = self.y
-        copy.setPosition(self.currentPosition)
         return copy
     }
 

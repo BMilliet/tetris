@@ -26,20 +26,15 @@ public final class ShapeC: ShapeProtocol, CustomStringConvertible {
     init(color: Int = Int(arc4random_uniform(8)) + 1) {
         let x = SHAPE_POS.first!
         let y = SHAPE_POS.last!
-        self.color = Int(arc4random_uniform(8))
+        self.color = color
         setCoordinates(x, y)
     }
 
     public func copy() -> ShapeProtocol {
-        let copy = ShapeC()
+        let copy = ShapeC(color: color)
         copy.x = self.x
         copy.y = self.y
-        copy.setPosition(self.currentPosition)
         return copy
-    }
-
-    public func setPosition(_ int: Int) {
-        self.currentPosition = int
     }
 
     public func current() -> [[Int]] {
@@ -50,8 +45,8 @@ public final class ShapeC: ShapeProtocol, CustomStringConvertible {
         return [x, y]
     }
 
+    public func setPosition(_ int: Int) {}
     public func rotateLeft() {}
-
     public func rotateRight() {}
 
     public func setCoordinates(_ x: Int, _ y: Int) {

@@ -51,10 +51,9 @@ public final class ShapeE: ShapeProtocol, CustomStringConvertible {
     }
 
     public func copy() -> ShapeProtocol {
-        let copy = ShapeE()
+        let copy = ShapeE(currentPosition: currentPosition, color: color)
         copy.x = self.x
         copy.y = self.y
-        copy.setPosition(self.currentPosition)
         return copy
     }
 
