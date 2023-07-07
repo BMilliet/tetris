@@ -116,26 +116,28 @@ public final class Board {
     }
 
     func removeRowIfPossible() {
-        var toRemove = [Int]()
+        var newMatrix = [[Int]]()
+        var removedRows = 0
 
-        for (i, row) in matrix.enumerated() {
+        matrix.forEach { row in
             if row.allSatisfy({ $0 != 0 }) {
-                toRemove.append(i)
+                removedRows += 1
+            } else {
+                newMatrix.append(row)
             }
+
         }
 
-        toRemove.forEach { _ in
-            matrix.insert(Array(repeating: 0, count: COLUMNS), at: 0)
+        for _ in 0..<removedRows {
+            newMatrix.insert(Array(repeating: 0, count: COLUMNS), at: 0)
         }
 
-        toRemove.forEach {
-            matrix.remove(at: $0 + toRemove.count)
-        }
-
-        points += 10 * toRemove.count
+        points += 100 * removedRows
+        matrix = newMatrix
     }
 
     private func createNewShape() {
+        removeRowIfPossible()
         selectedShape = ShapeUtils.random()
     }
 

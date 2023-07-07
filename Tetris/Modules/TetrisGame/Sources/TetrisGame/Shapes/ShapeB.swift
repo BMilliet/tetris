@@ -32,11 +32,11 @@ public final class ShapeB: ShapeProtocol, CustomStringConvertible {
         return [pos, x, y].joined(separator: "\n")
     }
 
-    init() {
+    init(currentPosition: Int = Int(arc4random_uniform(2)), color: Int = Int(arc4random_uniform(8)) + 1) {
         let x = SHAPE_POS.first!
         let y = SHAPE_POS.last!
-        currentPosition = Int(arc4random_uniform(2))
-        color = Int(arc4random_uniform(8))
+        self.currentPosition = currentPosition
+        self.color = color
         setCoordinates(x, y)
     }
 
@@ -60,24 +60,22 @@ public final class ShapeB: ShapeProtocol, CustomStringConvertible {
         return [x, y]
     }
 
-    public func rotateLeft() {
-        rotate()
-    }
-
-    public func rotateRight() {
-        rotate()
-    }
-
     public func setCoordinates(_ x: Int, _ y: Int) {
         self.x = x
         self.y = y
     }
 
-    private func rotate() {
-        if currentPosition == 0 {
-            currentPosition = 1
-        } else {
-            currentPosition = 0
-        }
+    public func rotateLeft() {
+        currentPosition = RotationHandler
+            .rotate(sides: matrix.count,
+                    current: currentPosition,
+                    orientation: .left)
+    }
+
+    public func rotateRight() {
+        currentPosition = RotationHandler
+            .rotate(sides: matrix.count,
+                    current: currentPosition,
+                    orientation: .right)
     }
 }

@@ -6,6 +6,7 @@ public final class TetrisGameViewController: UIViewController {
     private var board = Board()
     private var timer: Timer?
     private var difficultyLevel = 0.2
+    private var difficultyNumber = 2
 
     private lazy var boardView: UIView = {
         let board = UIView()
@@ -137,7 +138,6 @@ public final class TetrisGameViewController: UIViewController {
     private lazy var difficultyMenu: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.backgroundColor = .lightGray
         stack.layer.cornerRadius = 10
         stack.spacing = 8
         stack.isHidden = true
@@ -179,50 +179,6 @@ public final class TetrisGameViewController: UIViewController {
         label.text = ""
         return label
     }()
-
-    private var difficultyNumber = 2
-
-    @objc private func acceptDifficulty() {
-        difficultyMenu.isHidden = true
-        menu.isHidden = false
-    }
-
-    @objc private func increaseDifficulty() {
-        if difficultyNumber < 4 {
-            difficultyNumber += 1
-        }
-        setDifficultyLevel()
-    }
-
-    @objc private func dicreaseDifficulty() {
-        if difficultyNumber > 0 {
-            difficultyNumber -= 1
-        }
-        setDifficultyLevel()
-    }
-
-    private func setDifficultyLevel() {
-        switch difficultyNumber {
-        case 0:
-            difficultyLabel.text = "very easy"
-            difficultyLevel = 1.0
-        case 1:
-            difficultyLabel.text = "easy"
-            difficultyLevel = 0.8
-        case 2:
-            difficultyLabel.text = "normal"
-            difficultyLevel = 0.6
-        case 3:
-            difficultyLabel.text = "hard"
-            difficultyLevel = 0.4
-        case 4:
-            difficultyLabel.text = "very hard"
-            difficultyLevel = 0.2
-        default:
-            difficultyLabel.text = ""
-        }
-    }
-
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -298,37 +254,51 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     @objc private func showDifficultyMenu() {
+        setDifficultyLevel()
         difficultyMenu.isHidden = false
         menu.isHidden = true
     }
 
-    private func stopGame() {
-        timer?.invalidate()
+    @objc private func acceptDifficulty() {
+        difficultyMenu.isHidden = true
         menu.isHidden = false
-        areButtons(enabled: false)
     }
 
-    @objc func tapLeft() {
+    @objc private func increaseDifficulty() {
+        if difficultyNumber < 4 {
+            difficultyNumber += 1
+        }
+        setDifficultyLevel()
+    }
+
+    @objc private func dicreaseDifficulty() {
+        if difficultyNumber > 0 {
+            difficultyNumber -= 1
+        }
+        setDifficultyLevel()
+    }
+
+    @objc private func tapLeft() {
         board.moveLeft(1)
         render()
     }
 
-    @objc func tapDown() {
+    @objc private func tapDown() {
         board.moveDown()
         render()
     }
 
-    @objc func tapRight() {
+    @objc private func tapRight() {
         board.moveRight(1)
         render()
     }
     
-    @objc func rotateLeft() {
+    @objc private func rotateLeft() {
         board.rotateLeft()
         render()
     }
     
-    @objc func rotateRight() {
+    @objc private func rotateRight() {
         board.rotateRight()
         render()
     }
@@ -337,6 +307,34 @@ public final class TetrisGameViewController: UIViewController {
         board.moveDown()
         render()
         checkGameStatus()
+    }
+
+    private func stopGame() {
+        timer?.invalidate()
+        menu.isHidden = false
+        areButtons(enabled: false)
+    }
+
+    private func setDifficultyLevel() {
+        switch difficultyNumber {
+        case 0:
+            difficultyLabel.text = "very easy"
+            difficultyLevel = 1.0
+        case 1:
+            difficultyLabel.text = "easy"
+            difficultyLevel = 0.8
+        case 2:
+            difficultyLabel.text = "normal"
+            difficultyLevel = 0.6
+        case 3:
+            difficultyLabel.text = "hard"
+            difficultyLevel = 0.4
+        case 4:
+            difficultyLabel.text = "very hard"
+            difficultyLevel = 0.2
+        default:
+            difficultyLabel.text = ""
+        }
     }
 
     private func areButtons(enabled: Bool) {
@@ -354,7 +352,6 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     private func render() {
-        board.removeRowIfPossible()
         pointsLabel.text = "\(board.getPoints())"
 
         let matrix = board.getMatrix()

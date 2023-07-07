@@ -23,10 +23,10 @@ public final class ShapeC: ShapeProtocol, CustomStringConvertible {
         return [pos, x, y].joined(separator: "\n")
     }
 
-    init() {
+    init(color: Int = Int(arc4random_uniform(8)) + 1) {
         let x = SHAPE_POS.first!
         let y = SHAPE_POS.last!
-        color = Int(arc4random_uniform(8))
+        self.color = Int(arc4random_uniform(8))
         setCoordinates(x, y)
     }
 

@@ -42,11 +42,11 @@ public final class ShapeG: ShapeProtocol, CustomStringConvertible {
         return [pos, x, y].joined(separator: "\n")
     }
 
-    init() {
+    init(currentPosition: Int = Int(arc4random_uniform(4)), color: Int = Int(arc4random_uniform(8)) + 1) {
         let x = SHAPE_POS.first!
         let y = SHAPE_POS.last!
-        currentPosition = Int(arc4random_uniform(4))
-        color = Int(arc4random_uniform(8))
+        self.currentPosition = currentPosition
+        self.color = color
         setCoordinates(x, y)
     }
 
@@ -71,19 +71,17 @@ public final class ShapeG: ShapeProtocol, CustomStringConvertible {
     }
 
     public func rotateLeft() {
-        currentPosition += 1
-
-        if currentPosition >= 4 {
-            currentPosition = 0
-        }
+        currentPosition = RotationHandler
+            .rotate(sides: matrix.count,
+                    current: currentPosition,
+                    orientation: .left)
     }
 
     public func rotateRight() {
-        currentPosition -= 1
-
-        if currentPosition < 0 {
-            currentPosition = 3
-        }
+        currentPosition = RotationHandler
+            .rotate(sides: matrix.count,
+                    current: currentPosition,
+                    orientation: .right)
     }
 
     public func setCoordinates(_ x: Int, _ y: Int) {
