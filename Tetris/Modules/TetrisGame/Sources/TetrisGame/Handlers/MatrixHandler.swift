@@ -49,16 +49,10 @@ struct MatrixHandler {
         return newMatrix
     }
 
-    // TODO: still a bug in bottom collision...
     func collide(_ shape: ShapeProtocol, _ matrix: [[Int]]) -> CollisionTypes {
         let shapeMatrix = shape.current()
         let x = shape.coordinates()[0]
         let y = shape.coordinates()[1]
-
-        // could not render shape properly
-        if !validMatrix(shapeMatrix) {
-            return .invalid
-        }
 
         if debug {
             print(shape)
@@ -71,7 +65,7 @@ struct MatrixHandler {
                 let newY = rowIndex + y
 
                 // collide with another shape
-                if newY > 0 && newY <= BOARDMATRIX_POS.last! - 1 && newX > 0 && newX <= BOARDMATRIX_POS.first! - 1 {
+                if newY > 0 && newY <= BOARDMATRIX_POS.last! - 1 && newX > -1 && newX <= BOARDMATRIX_POS.first! - 1 {
                     let currentPoint = matrix[newY][newX]
 
                     if currentPoint != 0 && column != 0 {
@@ -97,15 +91,5 @@ struct MatrixHandler {
         }
 
         return .none
-    }
-
-    private func validMatrix(_ matrix: [[Int]]) -> Bool {
-        var bools = [Bool]()
-
-        matrix.forEach { row in
-            bools.append(row.allSatisfy { $0 == 0 })
-        }
-
-        return bools.contains(false)
     }
 }
