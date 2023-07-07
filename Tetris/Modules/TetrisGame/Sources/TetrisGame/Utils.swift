@@ -1,9 +1,15 @@
 import UIKit
 
-public let CUBE_SIZE: CGFloat       = 25
-public let SHAPE_POS: [Int]         = [5, -2]
-public let BOARDVIEW_POS: [CGFloat] = [326, 649]
-public let BOARDMATRIX_POS: [Int]   = [13, 26]
+public let CUBE_SIZE: CGFloat = 25
+
+public let SHAPE_DEFAULT_X: Int = 5
+public let SHAPE_DEFAULT_Y: Int = -2
+
+public let BOARD_MATRIX_WIDTH: Int  = 13
+public let BOARD_MATRIX_HEIGHT: Int = 26
+
+public let BOARDVIEW_WIDTH: CGFloat  = 326
+public let BOARDVIEW_HEIGHT: CGFloat = 649
 
 // switch to debug mode
 public let debug: Bool = true

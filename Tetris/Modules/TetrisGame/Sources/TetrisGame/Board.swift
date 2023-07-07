@@ -3,8 +3,8 @@ import UIKit
 public final class Board {
 
     private lazy var selectedShape: ShapeProtocol = Shape()
-    private let COLUMNS = BOARDMATRIX_POS.first!
-    private let ROWS = BOARDMATRIX_POS.last!
+    private let COLUMNS = BOARD_MATRIX_WIDTH
+    private let ROWS = BOARD_MATRIX_HEIGHT
     private let matrixHandler = MatrixHandler()
 
     private var matrix = [[Int]]()

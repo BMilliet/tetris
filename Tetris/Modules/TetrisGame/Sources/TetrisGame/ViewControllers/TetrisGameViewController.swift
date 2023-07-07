@@ -191,7 +191,7 @@ public final class TetrisGameViewController: UIViewController {
         
         arena.addSubview(boardView)
         boardView.centerXYEqual(to: arena)
-        boardView.size(height: BOARDVIEW_POS.last!, width: BOARDVIEW_POS.first!)
+        boardView.size(height: BOARDVIEW_HEIGHT, width: BOARDVIEW_WIDTH)
         
         controlPanel.addSubview(buttonLeft)
         controlPanel.addSubview(buttonDown)

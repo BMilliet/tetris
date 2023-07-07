@@ -1,7 +1,7 @@
 struct MatrixHandler {
 
-    private let COLUMNS = BOARDMATRIX_POS.first!
-    private let ROWS = BOARDMATRIX_POS.last!
+    private let COLUMNS = BOARD_MATRIX_WIDTH
+    private let ROWS = BOARD_MATRIX_HEIGHT
 
     func merge(_ shape: ShapeProtocol, _ matrix: [[Int]]) -> [[Int]] {
         let shapeMatrix = shape.current()
@@ -65,7 +65,7 @@ struct MatrixHandler {
                 let newY = rowIndex + y
 
                 // collide with another shape
-                if newY > 0 && newY <= BOARDMATRIX_POS.last! - 1 && newX > -1 && newX <= BOARDMATRIX_POS.first! - 1 {
+                if newY > 0 && newY <= BOARD_MATRIX_HEIGHT - 1 && newX > -1 && newX <= BOARD_MATRIX_WIDTH - 1 {
                     let currentPoint = matrix[newY][newX]
 
                     if currentPoint != 0 && column != 0 {

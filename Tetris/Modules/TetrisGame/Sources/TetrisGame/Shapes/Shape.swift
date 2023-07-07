@@ -10,15 +10,15 @@ public final class Shape: ShapeProtocol, CustomStringConvertible {
     init(matrix: [[[Int]]], position: Int? = nil, x: Int? = nil, y: Int? = nil) {
         self.matrix = matrix
         self.currentPosition = position ?? Int(arc4random_uniform(UInt32(matrix.count)))
-        self.x = x ?? 5
-        self.y = y ?? -2
+        self.x = x ?? SHAPE_DEFAULT_X
+        self.y = y ?? SHAPE_DEFAULT_Y
     }
 
     init(matrixNumber: Int? = nil, position: Int? = nil, x: Int? = nil, y: Int? = nil) {
         self.matrix = MatrixFactory.create(matrixNumber)
         self.currentPosition = position ?? Int(arc4random_uniform(UInt32(matrix.count)))
-        self.x = x ?? 5
-        self.y = y ?? -2
+        self.x = x ?? SHAPE_DEFAULT_X
+        self.y = y ?? SHAPE_DEFAULT_Y
     }
 
     public func current() -> [[Int]] {
