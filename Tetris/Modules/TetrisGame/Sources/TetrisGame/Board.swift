@@ -2,7 +2,7 @@ import UIKit
 
 public final class Board {
 
-    private lazy var selectedShape: ShapeProtocol = ShapeA()
+    private lazy var selectedShape: ShapeProtocol = Shape()
     private let COLUMNS = BOARDMATRIX_POS.first!
     private let ROWS = BOARDMATRIX_POS.last!
     private let matrixHandler = MatrixHandler()
@@ -138,7 +138,7 @@ public final class Board {
 
     private func createNewShape() {
         removeRowIfPossible()
-        selectedShape = ShapeUtils.random()
+        selectedShape = Shape()
     }
 
     private func checkGameStatus() {

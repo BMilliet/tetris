@@ -39,30 +39,7 @@ public enum Colors {
     }
 }
 
-public enum ShapeUtils {
-    static func random() -> ShapeProtocol {
-        let n = Int(arc4random_uniform(6))
-
-        switch n {
-        case 0:
-            return ShapeA()
-        case 1:
-            return ShapeB()
-        case 2:
-            return ShapeC()
-        case 3:
-            return ShapeD()
-        case 4:
-            return ShapeE()
-        case 5:
-            return ShapeF()
-        case 6:
-            return ShapeG()
-        default:
-            return ShapeA()
-        }
-    }
-
+public enum MatrixUtils {
     static func printAsTable(_ m: [[Int]]) {
         var line = ""
         print("===========================")
@@ -73,6 +50,152 @@ public enum ShapeUtils {
             }
             print(line)
             line = ""
+        }
+    }
+}
+
+public enum MatrixFactory {
+    static func create(_ shape: Int? = nil) -> [[[Int]]] {
+        let color = Int(arc4random_uniform(8)) + 1
+        let shape = shape ?? Int(arc4random_uniform(6))
+
+        switch shape {
+        case 0:
+            return [
+            [
+                [0,0,0],
+                [color,color,color],
+                [0,color,0]
+            ],
+
+            [
+                [0,color,0],
+                [color,color,0],
+                [0,color,0]
+            ],
+
+            [
+                [0,color,0],
+                [color,color,color],
+                [0,0,0]
+            ],
+
+            [
+                [0,color,0],
+                [0,color,color],
+                [0,color,0]
+            ]
+        ]
+        case 1:
+            return [
+            [
+                [0,color,0,0],
+                [0,color,0,0],
+                [0,color,0,0],
+                [0,color,0,0]
+            ],
+
+            [
+                [0,0,0,0],
+                [color,color,color,color],
+                [0,0,0,0],
+                [0,0,0,0],
+            ]
+        ]
+        case 2:
+            return [
+            [
+                [color,color],
+                [color,color]
+            ]
+        ]
+        case 3:
+            return [
+            [
+                [0,color,0],
+                [0,color,0],
+                [0,color,color]
+            ],
+
+            [
+                [0,0,color],
+                [color,color,color],
+                [0,0,0]
+            ],
+
+            [
+                [color,color,0],
+                [0,color,0],
+                [0,color,0]
+            ],
+
+            [
+                [0,0,0],
+                [color,color,color],
+                [color,0,0]
+            ]
+        ]
+        case 4:
+            return [
+            [
+                [0,color,0],
+                [0,color,0],
+                [color,color,0]
+            ],
+
+            [
+                [color,0,0],
+                [color,color,color],
+                [0,0,0]
+            ],
+
+            [
+                [0,color,color],
+                [0,color,0],
+                [0,color,0]
+            ],
+
+            [
+                [0,0,0],
+                [color,color,color],
+                [0,0,color]
+            ]
+        ]
+        case 5:
+            return [
+            [
+                [0,color,color],
+                [color,color,0],
+                [0,0,0]
+            ],
+
+            [
+                [color,0,0],
+                [color,color,0],
+                [0,color,0]
+            ]
+        ]
+        case 6:
+            return [
+            [
+                [color,color,0],
+                [0,color,color],
+                [0,0,0]
+            ],
+
+            [
+                [0,color,0],
+                [color,color,0],
+                [color,0,0]
+            ]
+        ]
+        default:
+            return [
+            [
+                [color,color],
+                [color,color]
+            ]
+        ]
         }
     }
 }

@@ -9,12 +9,12 @@ struct MatrixHandler {
         let x = shape.coordinates()[0]
         let y = shape.coordinates()[1]
 
-        for (ir, row) in shapeMatrix.enumerated() {
-            for (ic, column) in row.enumerated() {
+        for (rowIndex, row) in shapeMatrix.enumerated() {
+            for (columnIndex, column) in row.enumerated() {
                 if column != 0 {
 
-                    let newX = ic + x
-                    let newY = ir + y
+                    let newX = columnIndex + x
+                    let newY = rowIndex + y
 
                     if newX >= 0 && newY >= 0 && newX <= COLUMNS-1 && newY <= ROWS-1 {
                         newMatrix[newY][newX] = column
@@ -32,12 +32,12 @@ struct MatrixHandler {
         let x = shape.coordinates()[0]
         let y = shape.coordinates()[1]
 
-        for (ir, row) in shapeMatrix.enumerated() {
-            for (ic, column) in row.enumerated() {
+        for (rowIndex, row) in shapeMatrix.enumerated() {
+            for (columnIndex, column) in row.enumerated() {
                 if column != 0 {
 
-                    let newX = ic + x
-                    let newY = ir + y
+                    let newX = columnIndex + x
+                    let newY = rowIndex + y
 
                     if newX >= 0 && newY >= 0 && newX <= COLUMNS-1 && newY <= ROWS-1 {
                         newMatrix[newY][newX] = 0
@@ -64,11 +64,11 @@ struct MatrixHandler {
             print(shape)
         }
 
-        for (ir, row) in shapeMatrix.enumerated() {
-            for (ic, column) in row.enumerated() {
+        for (rowIndex, row) in shapeMatrix.enumerated() {
+            for (columnIndex, column) in row.enumerated() {
 
-                let newX = ic + x
-                let newY = ir + y
+                let newX = columnIndex + x
+                let newY = rowIndex + y
 
                 // collide with another shape
                 if newY > 0 && newY <= BOARDMATRIX_POS.last! - 1 && newX > 0 && newX <= BOARDMATRIX_POS.first! - 1 {
