@@ -25,8 +25,12 @@ public final class Shape: ShapeProtocol, CustomStringConvertible {
         return matrix[currentPosition]
     }
 
-    public func coordinates() -> [Int] {
-        return [x, y]
+    public func xPoint() -> Int {
+        return x
+    }
+
+    public func yPoint() -> Int {
+        return y
     }
 
     public func setCoordinates(_ x: Int, _ y: Int) {

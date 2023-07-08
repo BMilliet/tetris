@@ -27,8 +27,8 @@ public final class Board {
 
     func moveLeft(_ value: Int) {
         let shape = selectedShape
-        let x = shape.coordinates()[0]
-        let y = shape.coordinates()[1]
+        let x = shape.xPoint()
+        let y = shape.yPoint()
 
         let newX = x - value
 
@@ -37,8 +37,8 @@ public final class Board {
 
     func moveRight(_ value: Int) {
         let shape = selectedShape
-        let x = shape.coordinates()[0]
-        let y = shape.coordinates()[1]
+        let x = shape.xPoint()
+        let y = shape.yPoint()
 
         let newX = x + value
 
@@ -47,8 +47,8 @@ public final class Board {
 
     func moveDown() {
         let shape = selectedShape
-        let x = shape.coordinates()[0]
-        let y = shape.coordinates()[1]
+        let x = shape.xPoint()
+        let y = shape.yPoint()
         var matrixCopy = matrix
 
         let newY = y + 1
@@ -142,7 +142,7 @@ public final class Board {
     }
 
     private func checkGameStatus() {
-        gameOver = selectedShape.coordinates()[1] < 0
+        gameOver = selectedShape.yPoint() < 0
     }
 
     private func horizontalMove(_ shape: ShapeProtocol, x: Int, y: Int) {

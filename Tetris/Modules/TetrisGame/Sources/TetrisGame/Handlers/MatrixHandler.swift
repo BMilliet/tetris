@@ -6,8 +6,8 @@ struct MatrixHandler {
     func merge(_ shape: ShapeProtocol, _ matrix: [[Int]]) -> [[Int]] {
         let shapeMatrix = shape.current()
         var newMatrix = matrix
-        let x = shape.coordinates()[0]
-        let y = shape.coordinates()[1]
+        let x = shape.xPoint()
+        let y = shape.yPoint()
 
         for (rowIndex, row) in shapeMatrix.enumerated() {
             for (columnIndex, column) in row.enumerated() {
@@ -29,8 +29,8 @@ struct MatrixHandler {
     func remove(_ shape: ShapeProtocol, _ matrix: [[Int]]) -> [[Int]] {
         let shapeMatrix = shape.current()
         var newMatrix = matrix
-        let x = shape.coordinates()[0]
-        let y = shape.coordinates()[1]
+        let x = shape.xPoint()
+        let y = shape.yPoint()
 
         for (rowIndex, row) in shapeMatrix.enumerated() {
             for (columnIndex, column) in row.enumerated() {
@@ -51,8 +51,8 @@ struct MatrixHandler {
 
     func collide(_ shape: ShapeProtocol, _ matrix: [[Int]]) -> CollisionTypes {
         let shapeMatrix = shape.current()
-        let x = shape.coordinates()[0]
-        let y = shape.coordinates()[1]
+        let x = shape.xPoint()
+        let y = shape.yPoint()
 
         if debug {
             print(shape)
