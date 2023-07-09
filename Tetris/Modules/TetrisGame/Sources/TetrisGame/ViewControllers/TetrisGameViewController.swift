@@ -36,6 +36,7 @@ public final class TetrisGameViewController: UIViewController {
     private lazy var menu: MenuView = MenuView()
     private lazy var controlPanel: ControlPanelView = ControlPanelView()
     private lazy var difficultyMenu: DifficultyMenuView = DifficultyMenuView()
+    private lazy var saveScoreView: SaveScoreView = SaveScoreView()
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,9 +56,13 @@ public final class TetrisGameViewController: UIViewController {
 
         self.view.addSubview(menu)
         self.view.addSubview(difficultyMenu)
+        self.view.addSubview(saveScoreView)
+
+        saveScoreView.isHidden = true
 
         menu.centerXYEqual(to: view)
         difficultyMenu.centerXYEqual(to: view)
+        saveScoreView.centerXYEqual(to: view)
 
         areButtons(enabled: false)
 
@@ -74,6 +79,8 @@ public final class TetrisGameViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(tapLeft), name: .tapLeft, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(rotateLeft), name: .rotateLeft, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(rotateRight), name: .rotateRight, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissScoreSave), name: .savedScore, object: nil)
     }
 
     @objc private func startNewGame() {
@@ -145,15 +152,24 @@ public final class TetrisGameViewController: UIViewController {
         header.setNextShape(board.getNextShapeMatrix())
     }
 
-    private func stopGame() {
-        timer?.invalidate()
+    @objc private func dismissScoreSave() {
+        saveScoreView.isHidden = true
         menu.isHidden = false
-        areButtons(enabled: false)
     }
 
     private func checkGameStatus() {
-        if board.gameOver {
-            stopGame()
+        if !board.gameOver {
+            return
+        }
+
+        timer?.invalidate()
+        areButtons(enabled: false)
+
+        if ScoreHandler.isScoreInTop(board.getPoints()) {
+            saveScoreView.setScore(board.getPoints())
+            saveScoreView.isHidden = false
+        } else {
+            menu.isHidden = false
         }
     }
 

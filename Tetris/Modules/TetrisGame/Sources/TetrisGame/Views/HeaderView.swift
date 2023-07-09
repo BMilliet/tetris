@@ -37,7 +37,7 @@ final class HeaderView: UIView {
         self.size(height: 60)
         nextShape.size(height: 50, width: 50)
         scoreLabel.size(height: 30, width: 70)
-        pointsLabel.size(height: 30, width: 100)
+        pointsLabel.size(height: 30, width: 200)
 
         nextShape.centerYEqual(to: self)
         scoreLabel.centerYEqual(to: self)
