@@ -7,7 +7,6 @@ public final class Board {
 
     private let COLUMNS = BOARD_MATRIX_WIDTH
     private let ROWS = BOARD_MATRIX_HEIGHT
-    private let matrixHandler = MatrixHandler()
 
     private var matrix = [[Int]]()
     private var points = 0
@@ -60,10 +59,10 @@ public final class Board {
         let newY = y + 1
 
         let copy = shape.copy()
-        matrixCopy = matrixHandler.remove(copy, matrixCopy)
+        matrixCopy = MatrixHandler.remove(copy, matrixCopy)
         copy.setCoordinates(x, newY)
 
-        let collision = matrixHandler.collide(copy, matrixCopy)
+        let collision = MatrixHandler.collide(copy, matrixCopy)
 
         if DEBUG {
             print(collision)
@@ -82,9 +81,9 @@ public final class Board {
         }
 
 
-        matrix = matrixHandler.remove(shape, matrix)
+        matrix = MatrixHandler.remove(shape, matrix)
         shape.setCoordinates(x, newY)
-        matrix = matrixHandler.merge(shape, matrix)
+        matrix = MatrixHandler.merge(shape, matrix)
     }
 
     func rotateLeft() {
@@ -92,16 +91,16 @@ public final class Board {
         let copy = shape.copy()
         var matrixCopy = matrix
 
-        matrixCopy = matrixHandler.remove(shape, matrixCopy)
+        matrixCopy = MatrixHandler.remove(shape, matrixCopy)
         copy.rotateLeft()
 
-        if matrixHandler.collide(copy, matrixCopy) != .none {
+        if MatrixHandler.collide(copy, matrixCopy) != .none {
             return
         }
 
-        matrix = matrixHandler.remove(shape, matrix)
+        matrix = MatrixHandler.remove(shape, matrix)
         shape.rotateLeft()
-        matrix = matrixHandler.merge(shape, matrix)
+        matrix = MatrixHandler.merge(shape, matrix)
     }
 
     func rotateRight() {
@@ -109,16 +108,16 @@ public final class Board {
         let copy = shape.copy()
         var matrixCopy = matrix
 
-        matrixCopy = matrixHandler.remove(shape, matrixCopy)
+        matrixCopy = MatrixHandler.remove(shape, matrixCopy)
         copy.rotateRight()
 
-        if matrixHandler.collide(copy, matrixCopy) != .none {
+        if MatrixHandler.collide(copy, matrixCopy) != .none {
             return
         }
 
-        matrix = matrixHandler.remove(shape, matrix)
+        matrix = MatrixHandler.remove(shape, matrix)
         shape.rotateRight()
-        matrix = matrixHandler.merge(shape, matrix)
+        matrix = MatrixHandler.merge(shape, matrix)
     }
 
     func removeRowIfPossible() {
@@ -156,10 +155,10 @@ public final class Board {
         let copy = shape.copy()
         var matrixCopy = matrix
         
-        matrixCopy = matrixHandler.remove(copy, matrixCopy)
+        matrixCopy = MatrixHandler.remove(copy, matrixCopy)
         copy.setCoordinates(x, y)
 
-        let collision = matrixHandler.collide(copy, matrixCopy)
+        let collision = MatrixHandler.collide(copy, matrixCopy)
 
         if DEBUG {
             print(collision)
@@ -170,9 +169,9 @@ public final class Board {
             return
         }
 
-        matrix = matrixHandler.remove(shape, matrix)
+        matrix = MatrixHandler.remove(shape, matrix)
         shape.setCoordinates(x, y)
-        matrix = matrixHandler.merge(shape, matrix)
+        matrix = MatrixHandler.merge(shape, matrix)
     }
 
     private func drawMatrix() {
