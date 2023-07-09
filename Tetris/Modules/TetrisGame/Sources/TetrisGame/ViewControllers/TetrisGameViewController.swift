@@ -19,27 +19,38 @@ public final class TetrisGameViewController: UIViewController {
         board.backgroundColor = .black
         return board
     }()
+
     private lazy var stack: UIStackView = {
         let st = UIStackView()
         st.axis = .vertical
         return st
     }()
 
+    private lazy var spacer: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        return view
+    }()
+
+    private lazy var header: HeaderView = HeaderView()
     private lazy var menu: MenuView = MenuView()
     private lazy var controlPanel: ControlPanelView = ControlPanelView()
     private lazy var difficultyMenu: DifficultyMenuView = DifficultyMenuView()
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .black
         self.view.addSubview(stack)
-        
+
         stack.setAnchorsEqual(to: self.view)
+        stack.addArrangedSubview(header)
         stack.addArrangedSubview(boardContainer)
+        stack.addArrangedSubview(spacer)
         stack.addArrangedSubview(controlPanel)
-        
+
         boardContainer.addSubview(boardView)
-        boardView.centerXYEqual(to: boardContainer)
+        boardView.centerXEqual(to: boardContainer)
+        boardView.anchor(top: boardContainer.topAnchor, bottom: boardContainer.bottomAnchor, paddingTop: 4, paddingBottom: 4)
         boardView.size(height: BOARDVIEW_HEIGHT, width: BOARDVIEW_WIDTH)
 
         self.view.addSubview(menu)
@@ -150,7 +161,7 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     private func render() {
-        NotificationCenter.default.post(name: .setPointsLabel, object: nil, userInfo: ["pointsLabel": board.getPoints()])
+        NotificationCenter.default.post(name: .setPointsLabel, object: nil, userInfo: ["pointsLabel": "\(board.getPoints())"])
 
         let matrix = board.getMatrix()
 

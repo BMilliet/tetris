@@ -1,18 +1,17 @@
 import UIKit
 
-public let CUBE_SIZE: CGFloat = 25
-
 public let SHAPE_DEFAULT_X: Int = 5
 public let SHAPE_DEFAULT_Y: Int = -2
 
 public let BOARD_MATRIX_WIDTH: Int  = 13
-public let BOARD_MATRIX_HEIGHT: Int = 26
+public let BOARD_MATRIX_HEIGHT: Int =  Int(UIScreen.main.bounds.size.height / 32)
 
-public let BOARDVIEW_WIDTH: CGFloat  = 326
-public let BOARDVIEW_HEIGHT: CGFloat = 649
+public let CUBE_SIZE: CGFloat = UIScreen.main.bounds.size.width / 16.5
+public let BOARDVIEW_WIDTH: CGFloat = CGFloat(BOARD_MATRIX_WIDTH) * CUBE_SIZE
+public let BOARDVIEW_HEIGHT: CGFloat = CGFloat(BOARD_MATRIX_HEIGHT) * CUBE_SIZE
 
 // switch to debug mode
-public let debug: Bool = true
+public let DEBUG: Bool = true
 
 public enum CollisionTypes {
     case leftWall, rightWall, floor, anotherShape, none, invalid

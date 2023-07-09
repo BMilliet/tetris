@@ -67,7 +67,7 @@ public extension UIView {
     }
 
     func setAnchorsEqual(to base: UIView,
-                         _ padding: UIEdgeInsets = UIEdgeInsets.zero, safe: Bool = false) {
+                         _ padding: UIEdgeInsets = UIEdgeInsets.zero, safe: Bool = true) {
         safe ? setAnchorsWithSafeArea(base, padding) : setAnchors(base, padding)
     }
 

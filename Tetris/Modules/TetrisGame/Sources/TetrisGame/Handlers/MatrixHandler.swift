@@ -54,7 +54,7 @@ struct MatrixHandler {
         let x = shape.xPoint()
         let y = shape.yPoint()
 
-        if debug {
+        if DEBUG {
             print(shape)
         }
 

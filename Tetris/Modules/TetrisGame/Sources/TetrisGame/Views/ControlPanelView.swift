@@ -5,17 +5,7 @@ final class ControlPanelView: UIView {
     private lazy var controlPanel: UIView = {
         let panel = UIView()
         panel.backgroundColor = .lightGray
-        panel.size(height: 100)
         return panel
-    }()
-
-    private lazy var pointsLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: 22)
-        label.text = "0"
-        return label
     }()
 
     private lazy var buttonDown: UIButton = {
@@ -74,6 +64,7 @@ final class ControlPanelView: UIView {
         super.init(frame: .zero)
 
         self.addSubview(controlPanel)
+        self.size(height: 60)
         controlPanel.setAnchorsEqual(to: self)
 
         controlPanel.addSubview(buttonLeft)
@@ -81,17 +72,12 @@ final class ControlPanelView: UIView {
         controlPanel.addSubview(buttonRight)
         controlPanel.addSubview(rotateLeftButton)
         controlPanel.addSubview(rotateRightButton)
-        controlPanel.addSubview(pointsLabel)
-
-        pointsLabel.anchor(bottom: controlPanel.topAnchor, paddingBottom: 4)
-        pointsLabel.centerXEqual(to: controlPanel)
-        pointsLabel.size(height: 60, width: 100)
 
         rotateLeftButton.centerYEqual(to: controlPanel)
         rotateRightButton.centerYEqual(to: controlPanel)
 
-        rotateLeftButton.anchor(leading: controlPanel.leadingAnchor, paddingLeft: 10)
-        rotateRightButton.anchor(trailing: controlPanel.trailingAnchor, paddingRight: 10)
+        rotateLeftButton.anchor(leading: controlPanel.leadingAnchor, paddingLeft: 22)
+        rotateRightButton.anchor(trailing: controlPanel.trailingAnchor, paddingRight: 22)
 
         buttonDown.centerXYEqual(to: controlPanel)
         buttonLeft.centerYEqual(to: controlPanel)
@@ -101,7 +87,6 @@ final class ControlPanelView: UIView {
         buttonRight.anchor(leading: buttonDown.trailingAnchor, paddingLeft: 10)
 
         NotificationCenter.default.addObserver(self, selector: #selector(setButtonsEnabled(_:)), name: .setButtonsEnabled, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(setPointsLabel(_:)), name: .setPointsLabel, object: nil)
     }
 
     @objc private func tapDown() {
@@ -124,10 +109,6 @@ final class ControlPanelView: UIView {
         NotificationCenter.default.post(name: .rotateRight, object: nil)
     }
 
-    @objc private func setPointsLabel(_ notification: Notification) {
-        pointsLabel.text = notification.userInfo?["pointsLabel"] as? String ?? ""
-    }
-
     @objc private func setButtonsEnabled(_ notification: Notification) {
         let enabled = notification.userInfo?["setButtonsEnabled"] as? Bool ?? false
 
@@ -145,6 +126,5 @@ extension Notification.Name {
     static let tapLeft     = Notification.Name("tapLeft")
     static let rotateLeft  = Notification.Name("rotateLeft")
     static let rotateRight = Notification.Name("rotateRight")
-    static let setPointsLabel  = Notification.Name("setPointsLabel")
     static let setButtonsEnabled  = Notification.Name("setButtonsEnabled")
 }

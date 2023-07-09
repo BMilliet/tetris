@@ -59,7 +59,7 @@ public final class Board {
 
         let collision = matrixHandler.collide(copy, matrixCopy)
 
-        if debug {
+        if DEBUG {
             print(collision)
             print("=== vertical ===")
         }
@@ -132,7 +132,7 @@ public final class Board {
             newMatrix.insert(Array(repeating: 0, count: COLUMNS), at: 0)
         }
 
-        points += 100 * removedRows
+        points += 50 * removedRows
         matrix = newMatrix
     }
 
@@ -154,7 +154,7 @@ public final class Board {
 
         let collision = matrixHandler.collide(copy, matrixCopy)
 
-        if debug {
+        if DEBUG {
             print(collision)
             print("=== horizontal ===")
         }
