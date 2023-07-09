@@ -72,8 +72,6 @@ public final class DifficultyMenuView: UIView {
         acceptDifficultyButton.size(height: 50)
 
         self.isHidden = true
-
-        NotificationCenter.default.addObserver(self, selector: #selector(setDifficulty(_:)), name: .setDifficulty, object: nil)
     }
 
     @objc private func acceptDifficulty() {
@@ -88,13 +86,12 @@ public final class DifficultyMenuView: UIView {
         NotificationCenter.default.post(name: .dicreaseDifficulty, object: nil)
     }
 
-    @objc private func setDifficulty(_ notification: Notification) {
-        difficultyLabel.text = notification.userInfo?["difficultyLabel"] as? String ?? ""
+    func setDifficultyLabel(_ str: String) {
+        difficultyLabel.text = str
     }
 }
 
 extension Notification.Name {
-    static let setDifficulty      = Notification.Name("setDifficulty")
     static let acceptDifficulty   = Notification.Name("acceptDifficulty")
     static let increaseDifficulty = Notification.Name("increaseDifficulty")
     static let dicreaseDifficulty = Notification.Name("dicreaseDifficulty")

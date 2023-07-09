@@ -3,6 +3,8 @@ import UIKit
 public final class Board {
 
     private lazy var selectedShape: ShapeProtocol = Shape()
+    private lazy var nextShape: ShapeProtocol = Shape()
+
     private let COLUMNS = BOARD_MATRIX_WIDTH
     private let ROWS = BOARD_MATRIX_HEIGHT
     private let matrixHandler = MatrixHandler()
@@ -23,6 +25,10 @@ public final class Board {
 
     func getPoints() -> Int {
         return points
+    }
+
+    func getNextShapeMatrix() -> [[Int]] {
+        return nextShape.current()
     }
 
     func moveLeft(_ value: Int) {
@@ -138,7 +144,8 @@ public final class Board {
 
     private func createNewShape() {
         removeRowIfPossible()
-        selectedShape = Shape()
+        selectedShape = nextShape
+        nextShape = Shape()
     }
 
     private func checkGameStatus() {

@@ -142,6 +142,7 @@ public final class TetrisGameViewController: UIViewController {
         board.moveDown()
         render()
         checkGameStatus()
+        header.setNextShape(board.getNextShapeMatrix())
     }
 
     private func stopGame() {
@@ -157,11 +158,11 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     private func areButtons(enabled: Bool) {
-        NotificationCenter.default.post(name: .setButtonsEnabled, object: nil, userInfo: ["setButtonsEnabled": enabled])
+        controlPanel.setButtonsEnabled(enabled)
     }
 
     private func render() {
-        NotificationCenter.default.post(name: .setPointsLabel, object: nil, userInfo: ["pointsLabel": "\(board.getPoints())"])
+        header.setPointsLabel(board.getPoints())
 
         let matrix = board.getMatrix()
 
@@ -185,19 +186,19 @@ public final class TetrisGameViewController: UIViewController {
     private func setDifficultyLevel() {
         switch difficultyNumber {
         case 0:
-            NotificationCenter.default.post(name: .setDifficulty, object: nil, userInfo: ["difficultyLabel": "very easy"])
+            difficultyMenu.setDifficultyLabel("very easy")
             difficultyLevel = 1.0
         case 1:
-            NotificationCenter.default.post(name: .setDifficulty, object: nil, userInfo: ["difficultyLabel": "easy"])
+            difficultyMenu.setDifficultyLabel("easy")
             difficultyLevel = 0.8
         case 2:
-            NotificationCenter.default.post(name: .setDifficulty, object: nil, userInfo: ["difficultyLabel": "normal"])
+            difficultyMenu.setDifficultyLabel("normal")
             difficultyLevel = 0.6
         case 3:
-            NotificationCenter.default.post(name: .setDifficulty, object: nil, userInfo: ["difficultyLabel": "hard"])
+            difficultyMenu.setDifficultyLabel("hard")
             difficultyLevel = 0.4
         case 4:
-            NotificationCenter.default.post(name: .setDifficulty, object: nil, userInfo: ["difficultyLabel": "very hard"])
+            difficultyMenu.setDifficultyLabel("very hard")
             difficultyLevel = 0.2
         default:
             difficultyLevel = 0.6

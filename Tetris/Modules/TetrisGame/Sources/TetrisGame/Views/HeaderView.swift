@@ -4,7 +4,7 @@ final class HeaderView: UIView {
 
     private lazy var nextShape: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemPink
+        view.backgroundColor = .lightGray
         return view
     }()
 
@@ -46,15 +46,29 @@ final class HeaderView: UIView {
         nextShape.anchor(trailing: self.trailingAnchor, paddingRight: 42)
         scoreLabel.anchor(leading: self.leadingAnchor, paddingLeft: 42)
         pointsLabel.anchor(leading: scoreLabel.trailingAnchor)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(setPointsLabel(_:)), name: .setPointsLabel, object: nil)
     }
 
-    @objc private func setPointsLabel(_ notification: Notification) {
-        pointsLabel.text = notification.userInfo?["pointsLabel"] as? String ?? ""
-    }
-}
+    func setNextShape(_ matrix: [[Int]]) {
+        nextShape.subviews.forEach { $0.removeFromSuperview() }
 
-extension Notification.Name {
-    static let setPointsLabel = Notification.Name("setPointsLabel")
+        let size: CGFloat = 10
+
+        for (ir, row) in matrix.enumerated() {
+            for (ic, column) in row.enumerated() {
+                if column != 0 {
+                    let x = CGFloat(ic) * size + 8
+                    let y = CGFloat(ir) * size + 8
+
+                    let newCube = Cube(color: Colors.get(column))
+
+                    nextShape.addSubview(newCube)
+                    newCube.frame = CGRect(x: x, y: y, width: size, height: size)
+                }
+            }
+        }
+    }
+
+    func setPointsLabel(_ points: Int) {
+        pointsLabel.text = "\(points)"
+    }
 }

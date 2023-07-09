@@ -85,8 +85,6 @@ final class ControlPanelView: UIView {
 
         buttonLeft.anchor(trailing: buttonDown.leadingAnchor, paddingRight: 10)
         buttonRight.anchor(leading: buttonDown.trailingAnchor, paddingLeft: 10)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(setButtonsEnabled(_:)), name: .setButtonsEnabled, object: nil)
     }
 
     @objc private func tapDown() {
@@ -109,9 +107,7 @@ final class ControlPanelView: UIView {
         NotificationCenter.default.post(name: .rotateRight, object: nil)
     }
 
-    @objc private func setButtonsEnabled(_ notification: Notification) {
-        let enabled = notification.userInfo?["setButtonsEnabled"] as? Bool ?? false
-
+    func setButtonsEnabled(_ enabled: Bool) {
         rotateLeftButton.isEnabled = enabled
         rotateRightButton.isEnabled = enabled
         buttonLeft.isEnabled = enabled
@@ -126,5 +122,4 @@ extension Notification.Name {
     static let tapLeft     = Notification.Name("tapLeft")
     static let rotateLeft  = Notification.Name("rotateLeft")
     static let rotateRight = Notification.Name("rotateRight")
-    static let setButtonsEnabled  = Notification.Name("setButtonsEnabled")
 }
