@@ -157,7 +157,7 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     private func areButtons(enabled: Bool) {
-        NotificationCenter.default.post(name: .setDifficulty, object: nil, userInfo: ["setButtonsEnabled": enabled])
+        NotificationCenter.default.post(name: .setButtonsEnabled, object: nil, userInfo: ["setButtonsEnabled": enabled])
     }
 
     private func render() {
