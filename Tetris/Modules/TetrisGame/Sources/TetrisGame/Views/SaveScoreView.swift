@@ -20,6 +20,8 @@ public final class SaveScoreView: UIView {
         let label = UILabel()
         label.textColor = .white
         label.textAlignment = .left
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
         label.font = .boldSystemFont(ofSize: 20)
         label.text = "score:"
         return label
@@ -29,6 +31,8 @@ public final class SaveScoreView: UIView {
         let label = UILabel()
         label.textColor = .white
         label.textAlignment = .left
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
         label.font = .boldSystemFont(ofSize: 20)
         label.text = "0"
         return label
@@ -61,7 +65,7 @@ public final class SaveScoreView: UIView {
         labelsStack.addArrangedSubview(scoreLabel)
         labelsStack.addArrangedSubview(pointsLabel)
 
-        saveButton.size(height: 50, width: 100)
+        saveButton.size(height: 50, width: 200)
         field.size(height: 50)
         labelsStack.size(height: 50)
         scoreLabel.size(width: 80)

@@ -1,13 +1,20 @@
 import Foundation
 
 struct User {
-    let id: String = UUID().uuidString
+    let id: String
     let name: String
     let score: Int
+
+    init(id: String = UUID().uuidString, name: String, score: Int) {
+        self.id = id
+        self.name = name
+        self.score = score
+    }
 }
 
 enum ScoreHandler {
     static func save(_ user: User) {
+        removeLowest()
         let value: [String: Int] = [user.name: user.score]
         UserDefaults.standard.set(value, forKey: user.id)
     }
@@ -19,9 +26,9 @@ enum ScoreHandler {
     static func getAll() -> [User] {
         var list = [User]()
 
-        for (_, value) in UserDefaults.standard.dictionaryRepresentation() {
+        for (key, value) in UserDefaults.standard.dictionaryRepresentation() {
             guard let hash = value as? [String: Int] else { continue }
-            let user = User(name: hash.keys.first!, score: hash.values.first!)
+            let user = User(id: key, name: hash.keys.first!, score: hash.values.first!)
             list.append(user)
         }
 
@@ -52,7 +59,7 @@ enum ScoreHandler {
     static func removeLowest() {
         let users = getAll()
 
-        if users.count <= 5 {
+        if users.count <= 4 {
             return
         }
 

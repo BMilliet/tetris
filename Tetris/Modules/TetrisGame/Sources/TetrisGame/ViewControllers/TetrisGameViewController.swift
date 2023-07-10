@@ -37,6 +37,7 @@ public final class TetrisGameViewController: UIViewController {
     private lazy var controlPanel: ControlPanelView = ControlPanelView()
     private lazy var difficultyMenu: DifficultyMenuView = DifficultyMenuView()
     private lazy var saveScoreView: SaveScoreView = SaveScoreView()
+    private lazy var scoreBoard: ScoreBoard = ScoreBoard()
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,14 +58,20 @@ public final class TetrisGameViewController: UIViewController {
         self.view.addSubview(menu)
         self.view.addSubview(difficultyMenu)
         self.view.addSubview(saveScoreView)
+        self.view.addSubview(scoreBoard)
 
         saveScoreView.isHidden = true
+        scoreBoard.isHidden = true
 
         menu.centerXYEqual(to: view)
         difficultyMenu.centerXYEqual(to: view)
         saveScoreView.centerXYEqual(to: view)
+        scoreBoard.centerXYEqual(to: view)
 
         areButtons(enabled: false)
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapScreen))
+        self.view.addGestureRecognizer(tap)
 
         NotificationCenter.default.addObserver(self, selector: #selector(showDifficultyMenu), name: .showDifficultyMenu, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(startNewGame), name: .startNewGame, object: nil)
@@ -83,6 +90,15 @@ public final class TetrisGameViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(dismissScoreSave), name: .savedScore, object: nil)
     }
 
+    @objc private func tapScreen() {
+        if !scoreBoard.isHidden || !saveScoreView.isHidden || !difficultyMenu.isHidden {
+            saveScoreView.isHidden = true
+            scoreBoard.isHidden = true
+            difficultyMenu.isHidden = true
+            menu.isHidden = false
+        }
+    }
+
     @objc private func startNewGame() {
         menu.isHidden = true
         areButtons(enabled: true)
@@ -98,7 +114,9 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     @objc private func showStats() {
-        print("wip")
+        menu.isHidden = true
+        scoreBoard.isHidden = false
+        scoreBoard.setScore(ScoreHandler.getAll())
     }
 
     @objc private func acceptDifficulty() {
