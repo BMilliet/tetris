@@ -14,7 +14,7 @@ public let BOARDVIEW_HEIGHT: CGFloat = CGFloat(BOARD_MATRIX_HEIGHT) * CUBE_SIZE
 public let DEBUG: Bool = false
 
 public enum CollisionTypes {
-    case leftWall, rightWall, floor, anotherShape, none, invalid
+    case leftWall, rightWall, floor, anotherShape, none
 }
 
 public enum Colors {

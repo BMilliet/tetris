@@ -30,7 +30,7 @@ public final class Board {
         return nextShape.current()
     }
 
-    func moveLeft(_ value: Int) {
+    func moveLeft(_ value: Int = 1) {
         let shape = selectedShape
         let x = shape.xPoint()
         let y = shape.yPoint()
@@ -40,7 +40,7 @@ public final class Board {
         horizontalMove(shape, x: newX, y: y)
     }
 
-    func moveRight(_ value: Int) {
+    func moveRight(_ value: Int = 1) {
         let shape = selectedShape
         let x = shape.xPoint()
         let y = shape.yPoint()
@@ -50,13 +50,36 @@ public final class Board {
         horizontalMove(shape, x: newX, y: y)
     }
 
-    func moveDown() {
+    func drop() {
         let shape = selectedShape
         let x = shape.xPoint()
         let y = shape.yPoint()
         var matrixCopy = matrix
 
-        let newY = y + 1
+        var newY = y
+        let copy = shape.copy()
+        matrixCopy = MatrixHandler.remove(copy, matrixCopy)
+
+        var collision: CollisionTypes = .none
+
+        while collision == .none {
+            collision = MatrixHandler.collide(copy, matrixCopy)
+            copy.setCoordinates(x, newY)
+            newY += 1
+        }
+
+        matrix = MatrixHandler.remove(shape, matrix)
+        shape.setCoordinates(x, newY - 3)
+        matrix = MatrixHandler.merge(shape, matrix)
+    }
+
+    func moveDown(_ value: Int = 1) {
+        let shape = selectedShape
+        let x = shape.xPoint()
+        let y = shape.yPoint()
+        var matrixCopy = matrix
+
+        let newY = y + value
 
         let copy = shape.copy()
         matrixCopy = MatrixHandler.remove(copy, matrixCopy)
@@ -73,8 +96,6 @@ public final class Board {
         case .floor, .anotherShape:
             checkGameStatus()
             createNewShape()
-            return
-        case .invalid:
             return
         default:
             break
@@ -148,7 +169,9 @@ public final class Board {
     }
 
     private func checkGameStatus() {
-        gameOver = selectedShape.yPoint() < 0
+        if selectedShape.yPoint() < 0 {
+            gameOver = true
+        }
     }
 
     private func horizontalMove(_ shape: ShapeProtocol, x: Int, y: Int) {

@@ -7,6 +7,4 @@ The main goal of this project for me was study 2D arrays. To make it a little bi
 
 ## WIP [TODOS]
 
-- down arrow actually move shape all the way down.
-- move floating pieaces down.
 - make arrows using regular UIView instead of icons so i can remove iOS 13 requirement.

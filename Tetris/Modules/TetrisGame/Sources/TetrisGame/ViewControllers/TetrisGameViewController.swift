@@ -144,8 +144,10 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     @objc private func tapDown() {
-        board.moveDown()
+        board.drop()
         render()
+        checkGameStatus()
+        header.setNextShape(board.getNextShapeMatrix())
     }
 
     @objc private func tapRight() {
