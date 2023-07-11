@@ -75,6 +75,14 @@ public extension UIView {
         subviews.forEach { self.addSubview($0) }
     }
 
+    func blinkAnimation() {
+        UIView.animate(withDuration: 0.05, delay: 0, options: [.autoreverse], animations: {
+            self.alpha = 0
+        }) { _ in
+            self.alpha = 1
+        }
+    }
+
     private func setAnchorsWithSafeArea(_ base: UIView, _ padding: UIEdgeInsets) {
         self.anchor(top: base.safeAreaLayoutGuide.topAnchor,
                     bottom: base.safeAreaLayoutGuide.bottomAnchor,

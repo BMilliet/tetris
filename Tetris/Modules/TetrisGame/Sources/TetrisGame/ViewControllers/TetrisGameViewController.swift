@@ -79,7 +79,7 @@ public final class TetrisGameViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(acceptDifficulty), name: .acceptDifficulty, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(increaseDifficulty), name: .increaseDifficulty, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(dicreaseDifficulty), name: .dicreaseDifficulty, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(decreaseDifficulty), name: .decreaseDifficulty, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(tapDown), name: .tapDown, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tapRight), name: .tapRight, object: nil)
@@ -123,17 +123,18 @@ public final class TetrisGameViewController: UIViewController {
 
     @objc private func acceptDifficulty() {
         difficultyMenu.isHidden = true
-        menu.isHidden = false
+        menu.isHidden = true
+        startNewGame()
     }
 
     @objc private func increaseDifficulty() {
-        if difficultyNumber < 4 {
+        if difficultyNumber < 5 {
             difficultyNumber += 1
         }
         setDifficultyLevel()
     }
 
-    @objc private func dicreaseDifficulty() {
+    @objc private func decreaseDifficulty() {
         if difficultyNumber > 0 {
             difficultyNumber -= 1
         }
@@ -225,19 +226,22 @@ public final class TetrisGameViewController: UIViewController {
         switch difficultyNumber {
         case 0:
             difficultyMenu.setDifficultyLabel("very easy")
-            difficultyLevel = 1.0
+            difficultyLevel = 0.8
         case 1:
             difficultyMenu.setDifficultyLabel("easy")
-            difficultyLevel = 0.8
+            difficultyLevel = 0.6
         case 2:
             difficultyMenu.setDifficultyLabel("normal")
-            difficultyLevel = 0.6
+            difficultyLevel = 0.4
         case 3:
             difficultyMenu.setDifficultyLabel("hard")
-            difficultyLevel = 0.4
+            difficultyLevel = 0.2
         case 4:
             difficultyMenu.setDifficultyLabel("very hard")
-            difficultyLevel = 0.2
+            difficultyLevel = 0.1
+        case 5:
+            difficultyMenu.setDifficultyLabel("legendary")
+            difficultyLevel = 0.05
         default:
             difficultyLevel = 0.6
         }

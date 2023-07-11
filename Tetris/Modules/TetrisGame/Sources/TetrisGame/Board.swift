@@ -153,7 +153,14 @@ public final class Board {
             newMatrix.insert(Array(repeating: 0, count: COLUMNS), at: 0)
         }
 
-        points += 50 * removedRows
+        points += SCORE_BASE * removedRows
+        var bonus = 0
+
+        for row in 0..<removedRows {
+            points += bonus * row
+            bonus += SCORE_BONUS
+        }
+
         matrix = newMatrix
     }
 

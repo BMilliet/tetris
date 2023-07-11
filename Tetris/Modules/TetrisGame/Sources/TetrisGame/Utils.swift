@@ -10,6 +10,9 @@ public let CUBE_SIZE: CGFloat = UIScreen.main.bounds.size.width / 16.5
 public let BOARDVIEW_WIDTH: CGFloat = CGFloat(BOARD_MATRIX_WIDTH) * CUBE_SIZE
 public let BOARDVIEW_HEIGHT: CGFloat = CGFloat(BOARD_MATRIX_HEIGHT) * CUBE_SIZE
 
+public let SCORE_BASE = 50
+public let SCORE_BONUS = 5
+
 public enum CollisionTypes {
     case leftWall, rightWall, floor, anotherShape, none
 }

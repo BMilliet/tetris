@@ -36,12 +36,12 @@ public final class DifficultyMenuView: UIView {
         return button
     }()
 
-    private lazy var dicreaseDifficultyButton = {
+    private lazy var decreaseDifficultyButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
         button.layer.cornerRadius = 10
         button.setImage(UIImage(systemName: "arrow.left")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(dicreaseDifficulty), for: .touchUpInside)
+        button.addTarget(self, action: #selector(decreaseDifficulty), for: .touchUpInside)
         return button
     }()
 
@@ -62,11 +62,11 @@ public final class DifficultyMenuView: UIView {
         difficultyMenu.addArrangedSubview(difficultyPicker)
         difficultyMenu.addArrangedSubview(acceptDifficultyButton)
 
-        difficultyPicker.addArrangedSubview(dicreaseDifficultyButton)
+        difficultyPicker.addArrangedSubview(decreaseDifficultyButton)
         difficultyPicker.addArrangedSubview(difficultyLabel)
         difficultyPicker.addArrangedSubview(increaseDifficultyButton)
 
-        dicreaseDifficultyButton.size(height: 50, width: 50)
+        decreaseDifficultyButton.size(height: 50, width: 50)
         increaseDifficultyButton.size(height: 50, width: 50)
         difficultyLabel.size(height: 50, width: 140)
         acceptDifficultyButton.size(height: 50)
@@ -79,11 +79,13 @@ public final class DifficultyMenuView: UIView {
     }
 
     @objc private func increaseDifficulty() {
+        increaseDifficultyButton.blinkAnimation()
         NotificationCenter.default.post(name: .increaseDifficulty, object: nil)
     }
 
-    @objc private func dicreaseDifficulty() {
-        NotificationCenter.default.post(name: .dicreaseDifficulty, object: nil)
+    @objc private func decreaseDifficulty() {
+        decreaseDifficultyButton.blinkAnimation()
+        NotificationCenter.default.post(name: .decreaseDifficulty, object: nil)
     }
 
     func setDifficultyLabel(_ str: String) {
@@ -94,5 +96,5 @@ public final class DifficultyMenuView: UIView {
 extension Notification.Name {
     static let acceptDifficulty   = Notification.Name("acceptDifficulty")
     static let increaseDifficulty = Notification.Name("increaseDifficulty")
-    static let dicreaseDifficulty = Notification.Name("dicreaseDifficulty")
+    static let decreaseDifficulty = Notification.Name("decreaseDifficulty")
 }
