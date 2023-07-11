@@ -91,6 +91,8 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     @objc private func tapScreen() {
+        view.endEditing(true)
+
         if !scoreBoard.isHidden || !saveScoreView.isHidden || !difficultyMenu.isHidden {
             saveScoreView.isHidden = true
             scoreBoard.isHidden = true

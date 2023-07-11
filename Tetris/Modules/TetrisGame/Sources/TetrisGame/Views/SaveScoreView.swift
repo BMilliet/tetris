@@ -87,10 +87,15 @@ public final class SaveScoreView: UIView {
             return
         }
 
+        if field.text?.isEmpty ?? true || pointsLabel.text?.isEmpty ?? true {
+            return
+        }
+
         let user = User(name: name, score: score)
         ScoreHandler.save(user)
 
         NotificationCenter.default.post(name: .savedScore, object: nil)
+        self.endEditing(true)
     }
 }
 

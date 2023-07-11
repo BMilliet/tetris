@@ -87,11 +87,6 @@ public final class Board {
 
         let collision = MatrixHandler.collide(copy, matrixCopy)
 
-        if DEBUG {
-            print(collision)
-            print("=== vertical ===")
-        }
-
         switch collision {
         case .floor, .anotherShape:
             checkGameStatus()
@@ -182,11 +177,6 @@ public final class Board {
         copy.setCoordinates(x, y)
 
         let collision = MatrixHandler.collide(copy, matrixCopy)
-
-        if DEBUG {
-            print(collision)
-            print("=== horizontal ===")
-        }
 
         if collision != .none {
             return

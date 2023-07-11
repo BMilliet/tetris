@@ -8,42 +8,63 @@ final class ControlPanelView: UIView {
         return panel
     }()
 
-    private lazy var buttonDown: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .darkGray
-        button.size(height: 50, width: 50)
-        button.setImage(UIImage(systemName: "arrow.down")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(tapDown), for: .touchUpInside)
-        return button
+    private lazy var arrowDown: TriangleDownView = {
+        let view = TriangleDownView()
+        view.backgroundColor = .clear
+        view.size(height: 30, width: 40)
+        return view
     }()
 
-    private lazy var buttonRight: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .darkGray
-        button.size(height: 50, width: 50)
-        button.setImage(UIImage(systemName: "arrow.right")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(tapRight), for: .touchUpInside)
-        return button
+    private lazy var arrowRight: TriangleRightView = {
+        let view = TriangleRightView()
+        view.backgroundColor = .clear
+        view.size(height: 40, width: 30)
+        return view
     }()
 
-    private lazy var buttonLeft: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .darkGray
-        button.size(height: 50, width: 50)
-        button.setImage(UIImage(systemName: "arrow.left")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(tapLeft), for: .touchUpInside)
-        return button
+    private lazy var arrowLeft: TriangleLeftView = {
+        let view = TriangleLeftView()
+        view.backgroundColor = .clear
+        view.size(height: 40, width: 30)
+        return view
+    }()
+
+    private lazy var buttonDown: UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 2
+        view.layer.cornerRadius = 10
+        view.layer.borderColor = UIColor.darkGray.cgColor
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapDown))
+        view.addGestureRecognizer(tap)
+        return view
+    }()
+
+    private lazy var buttonRight: UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 2
+        view.layer.cornerRadius = 10
+        view.layer.borderColor = UIColor.darkGray.cgColor
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapRight))
+        view.addGestureRecognizer(tap)
+        return view
+    }()
+
+    private lazy var buttonLeft: UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 2
+        view.layer.cornerRadius = 10
+        view.layer.borderColor = UIColor.darkGray.cgColor
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapLeft))
+        view.addGestureRecognizer(tap)
+        return view
     }()
 
     private lazy var rotateLeftButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
         button.size(height: 50, width: 50)
-        button.setImage(UIImage(systemName: "arrow.uturn.right")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.layer.cornerRadius = 10
+        button.setTitle("L", for: .normal)
+        button.layer.cornerRadius = 25
         button.addTarget(self, action: #selector(rotateLeft), for: .touchUpInside)
         return button
     }()
@@ -52,8 +73,8 @@ final class ControlPanelView: UIView {
         let button = UIButton()
         button.backgroundColor = .darkGray
         button.size(height: 50, width: 50)
-        button.setImage(UIImage(systemName: "arrow.uturn.left")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        button.layer.cornerRadius = 10
+        button.setTitle("R", for: .normal)
+        button.layer.cornerRadius = 25
         button.addTarget(self, action: #selector(rotateRight), for: .touchUpInside)
         return button
     }()
@@ -67,6 +88,9 @@ final class ControlPanelView: UIView {
         self.size(height: 60)
         controlPanel.setAnchorsEqual(to: self)
 
+        controlPanel.addSubview(arrowLeft)
+        controlPanel.addSubview(arrowDown)
+        controlPanel.addSubview(arrowRight)
         controlPanel.addSubview(buttonLeft)
         controlPanel.addSubview(buttonDown)
         controlPanel.addSubview(buttonRight)
@@ -79,12 +103,16 @@ final class ControlPanelView: UIView {
         rotateLeftButton.anchor(leading: controlPanel.leadingAnchor, paddingLeft: 22)
         rotateRightButton.anchor(trailing: controlPanel.trailingAnchor, paddingRight: 22)
 
-        buttonDown.centerXYEqual(to: controlPanel)
-        buttonLeft.centerYEqual(to: controlPanel)
-        buttonRight.centerYEqual(to: controlPanel)
+        arrowDown.centerXYEqual(to: controlPanel)
+        arrowLeft.centerYEqual(to: controlPanel)
+        arrowRight.centerYEqual(to: controlPanel)
 
-        buttonLeft.anchor(trailing: buttonDown.leadingAnchor, paddingRight: 10)
-        buttonRight.anchor(leading: buttonDown.trailingAnchor, paddingLeft: 10)
+        arrowLeft.anchor(trailing: arrowDown.leadingAnchor, paddingRight: 30)
+        arrowRight.anchor(leading: arrowDown.trailingAnchor, paddingLeft: 30)
+
+        buttonDown.setAnchorsEqual(to: arrowDown, .init(top: -11, left: -6, bottom: -11, right: -6))
+        buttonLeft.setAnchorsEqual(to: arrowLeft, .init(top: -6, left: -8, bottom: -6, right: -12))
+        buttonRight.setAnchorsEqual(to: arrowRight, .init(top: -6, left: -12, bottom: -6, right: -8))
     }
 
     @objc private func tapDown() {
@@ -110,9 +138,9 @@ final class ControlPanelView: UIView {
     func setButtonsEnabled(_ enabled: Bool) {
         rotateLeftButton.isEnabled = enabled
         rotateRightButton.isEnabled = enabled
-        buttonLeft.isEnabled = enabled
-        buttonRight.isEnabled = enabled
-        buttonDown.isEnabled = enabled
+        buttonLeft.isUserInteractionEnabled = enabled
+        buttonRight.isUserInteractionEnabled = enabled
+        buttonDown.isUserInteractionEnabled = enabled
     }
 }
 

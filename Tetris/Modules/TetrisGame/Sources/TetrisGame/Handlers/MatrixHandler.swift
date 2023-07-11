@@ -51,10 +51,6 @@ enum MatrixHandler {
         let x = shape.xPoint()
         let y = shape.yPoint()
 
-        if DEBUG {
-            print(shape)
-        }
-
         for (rowIndex, row) in shapeMatrix.enumerated() {
             for (columnIndex, column) in row.enumerated() {
 
