@@ -31,7 +31,7 @@ public final class DifficultyMenuView: UIView {
         let button = UIButton()
         button.backgroundColor = .darkGray
         button.layer.cornerRadius = 10
-        button.setImage(UIImage(systemName: "arrow.right")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        button.setTitle("+", for: .normal)
         button.addTarget(self, action: #selector(increaseDifficulty), for: .touchUpInside)
         return button
     }()
@@ -40,7 +40,7 @@ public final class DifficultyMenuView: UIView {
         let button = UIButton()
         button.backgroundColor = .darkGray
         button.layer.cornerRadius = 10
-        button.setImage(UIImage(systemName: "arrow.left")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        button.setTitle("-", for: .normal)
         button.addTarget(self, action: #selector(decreaseDifficulty), for: .touchUpInside)
         return button
     }()
