@@ -29,11 +29,32 @@ final class ControlPanelView: UIView {
         return view
     }()
 
-    private lazy var buttonDown: UIView = {
+    private lazy var buttonLayoutDown: UIView = {
         let view = UIView()
         view.layer.borderWidth = 2
         view.layer.cornerRadius = 10
         view.layer.borderColor = UIColor.darkGray.cgColor
+        return view
+    }()
+
+    private lazy var buttonLayoutRight: UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 2
+        view.layer.cornerRadius = 10
+        view.layer.borderColor = UIColor.darkGray.cgColor
+        return view
+    }()
+
+    private lazy var buttonLayoutLeft: UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 2
+        view.layer.cornerRadius = 10
+        view.layer.borderColor = UIColor.darkGray.cgColor
+        return view
+    }()
+
+    private lazy var buttonDown: UIView = {
+        let view = UIView()
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapDown))
         view.addGestureRecognizer(tap)
         return view
@@ -41,9 +62,6 @@ final class ControlPanelView: UIView {
 
     private lazy var buttonRight: UIView = {
         let view = UIView()
-        view.layer.borderWidth = 2
-        view.layer.cornerRadius = 10
-        view.layer.borderColor = UIColor.darkGray.cgColor
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapRight))
         view.addGestureRecognizer(tap)
         return view
@@ -51,9 +69,6 @@ final class ControlPanelView: UIView {
 
     private lazy var buttonLeft: UIView = {
         let view = UIView()
-        view.layer.borderWidth = 2
-        view.layer.cornerRadius = 10
-        view.layer.borderColor = UIColor.darkGray.cgColor
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapLeft))
         view.addGestureRecognizer(tap)
         return view
@@ -91,6 +106,9 @@ final class ControlPanelView: UIView {
         controlPanel.addSubview(arrowLeft)
         controlPanel.addSubview(arrowDown)
         controlPanel.addSubview(arrowRight)
+        controlPanel.addSubview(buttonLayoutLeft)
+        controlPanel.addSubview(buttonLayoutDown)
+        controlPanel.addSubview(buttonLayoutRight)
         controlPanel.addSubview(buttonLeft)
         controlPanel.addSubview(buttonDown)
         controlPanel.addSubview(buttonRight)
@@ -110,9 +128,13 @@ final class ControlPanelView: UIView {
         arrowLeft.anchor(trailing: arrowDown.leadingAnchor, paddingRight: 30)
         arrowRight.anchor(leading: arrowDown.trailingAnchor, paddingLeft: 30)
 
-        buttonDown.setAnchorsEqual(to: arrowDown, .init(top: -11, left: -6, bottom: -11, right: -6))
-        buttonLeft.setAnchorsEqual(to: arrowLeft, .init(top: -6, left: -8, bottom: -6, right: -12))
-        buttonRight.setAnchorsEqual(to: arrowRight, .init(top: -6, left: -12, bottom: -6, right: -8))
+        buttonLayoutDown.setAnchorsEqual(to: arrowDown, .init(top: -11, left: -6, bottom: -11, right: -6))
+        buttonLayoutLeft.setAnchorsEqual(to: arrowLeft, .init(top: -6, left: -8, bottom: -6, right: -12))
+        buttonLayoutRight.setAnchorsEqual(to: arrowRight, .init(top: -6, left: -12, bottom: -6, right: -8))
+
+        buttonDown.setAnchorsEqual(to: buttonLayoutDown)
+        buttonLeft.setAnchorsEqual(to: buttonLayoutLeft)
+        buttonRight.setAnchorsEqual(to: buttonLayoutRight)
     }
 
     @objc private func tapDown() {
@@ -144,8 +166,6 @@ final class ControlPanelView: UIView {
     }
 
     func setButtonsEnabled(_ enabled: Bool) {
-        rotateLeftButton.isEnabled = enabled
-        rotateRightButton.isEnabled = enabled
         buttonLeft.isUserInteractionEnabled = enabled
         buttonRight.isUserInteractionEnabled = enabled
         buttonDown.isUserInteractionEnabled = enabled
