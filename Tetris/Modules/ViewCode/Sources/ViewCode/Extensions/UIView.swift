@@ -83,6 +83,21 @@ public extension UIView {
         }
     }
 
+    func upDownFade() {
+        UIView.animate(withDuration: 0.8, delay: 0, options: .curveEaseInOut, animations: {
+            self.transform = .identity
+            self.transform = CGAffineTransform(translationX: 0, y: self.bounds.height - 20)
+            self.alpha = 1.0
+        }) { _ in
+            UIView.animate(withDuration: 0.8, delay: 0.8, options: .curveEaseInOut, animations: {
+                self.transform = CGAffineTransform(translationX: 0, y: self.bounds.height - 28)
+                self.alpha = 0.0
+            }) { _ in
+                self.removeFromSuperview()
+            }
+        }
+    }
+
     private func setAnchorsWithSafeArea(_ base: UIView, _ padding: UIEdgeInsets) {
         self.anchor(top: base.safeAreaLayoutGuide.topAnchor,
                     bottom: base.safeAreaLayoutGuide.bottomAnchor,

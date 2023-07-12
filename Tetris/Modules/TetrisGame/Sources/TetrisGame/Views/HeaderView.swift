@@ -69,6 +69,30 @@ final class HeaderView: UIView {
     }
 
     func setPointsLabel(_ points: Int) {
+        let current = Int(pointsLabel.text!)!
+
+        if points == 0 {
+            pointsLabel.text = "\(points)"
+        }
+
+        if current >= points {
+            return
+        }
+
+        addPointsAnimation(points - current)
         pointsLabel.text = "\(points)"
+    }
+
+    func addPointsAnimation(_ points: Int) {
+        let newPoints = UILabel()
+        newPoints.textColor = .green
+        newPoints.textAlignment = .left
+        newPoints.font = .boldSystemFont(ofSize: 20)
+        newPoints.text = "+\(points)"
+        newPoints.alpha = 0
+
+        self.addSubview(newPoints)
+        newPoints.setAnchorsEqual(to: pointsLabel, .init(top: 0, left: 0, bottom: 0, right: 48))
+        newPoints.upDownFade()
     }
 }
