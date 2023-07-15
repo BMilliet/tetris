@@ -59,6 +59,26 @@ public enum MatrixUtils {
     }
 }
 
+class Bindable<T> {
+    typealias Callback = (T) -> Void
+    var callback: Callback?
+
+    var value: T {
+        didSet {
+            callback?(value)
+        }
+    }
+
+    init(_ value: T) {
+        self.value = value
+    }
+
+    func bind(_ callback: @escaping Callback) {
+        self.callback = callback
+        callback(value)
+    }
+}
+
 public enum MatrixFactory {
     static func create(_ shape: Int? = nil) -> [[[Int]]] {
         let color = Int(arc4random_uniform(8)) + 1
