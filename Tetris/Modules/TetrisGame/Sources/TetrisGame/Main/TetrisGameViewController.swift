@@ -158,10 +158,10 @@ public final class TetrisGameViewController: UIViewController {
         animatedRow.anchor(bottom: boardView.bottomAnchor, leading: boardView.leadingAnchor)
         animatedRow.backgroundColor = .white
 
-        UIView.animate(withDuration: 0.05, delay: 0, options: [.autoreverse], animations: {
+        UIView.animate(withDuration: 0.02, delay: 0, options: [.autoreverse], animations: {
             animatedRow.alpha = 1
         }) { _ in
-            UIView.animate(withDuration: 0.08, delay: 0.5, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.05, delay: 0.2, options: .curveEaseInOut, animations: {
                 animatedRow.alpha = 0.0
             }) { _ in
                 animatedRow.removeFromSuperview()

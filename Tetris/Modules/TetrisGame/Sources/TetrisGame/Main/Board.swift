@@ -78,7 +78,7 @@ public final class Board {
         matrix = MatrixHandler.merge(shape, matrix)
     }
 
-    func moveDown(_ value: Int = 1, removeLineAction: (_ rows: [Int], _ onCompletion: () -> Void) -> Void ) {
+    func moveDown(_ value: Int = 1, removeLineAction: (_ rows: [Int]) -> Void ) {
         let shape = selectedShape
         let x = shape.xPoint()
         let y = shape.yPoint()
@@ -100,8 +100,9 @@ public final class Board {
             if removable.removedRows.count > 0 {
                 countPoints(removable.removedRows)
 
-                // do animation
-                removeLineAction(removable.removedRows) { [weak self] in
+                removeLineAction(removable.removedRows)
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) { [weak self] in
                     self?.matrix = removable.newMatrix
                 }
             }
