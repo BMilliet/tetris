@@ -12,7 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let window = window else { return false }
 
         window.makeKeyAndVisible()
-        window.rootViewController = TetrisGameFactory.build() // TetrisGameViewController()
+        window.rootViewController = TetrisGameFactory.build()
 
         return true
     }
