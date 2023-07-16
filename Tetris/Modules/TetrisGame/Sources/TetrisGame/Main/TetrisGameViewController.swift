@@ -151,11 +151,19 @@ public final class TetrisGameViewController: UIViewController {
         }
     }
 
-    func animate(rows: [Int]) {
+    func animate(row: Int) {
         let animatedRow = UIView()
+        let y = CGFloat(row) * CUBE_SIZE
         animatedRow.size(height: CUBE_SIZE, width: boardView.frame.width)
+
         self.view.addSubview(animatedRow)
-        animatedRow.anchor(bottom: boardView.bottomAnchor, leading: boardView.leadingAnchor)
+
+        animatedRow.anchor(
+            bottom: boardView.bottomAnchor,
+            leading: boardView.leadingAnchor,
+            paddingBottom: boardView.frame.height - (y + CUBE_SIZE)
+        )
+
         animatedRow.backgroundColor = .white
 
         UIView.animate(withDuration: 0.02, delay: 0, options: [.autoreverse], animations: {

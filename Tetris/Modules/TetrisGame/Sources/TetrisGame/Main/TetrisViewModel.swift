@@ -129,7 +129,11 @@ final class TetrisViewModel {
         board.moveDown { [weak self] rows in
             guard let self = self else { return }
             self.timer?.invalidate()
-            self.viewController?.animate(rows: rows)
+
+            rows.forEach {
+                self.viewController?.animate(row: $0)
+            }
+
             self.timer = Timer.scheduledTimer(
                 timeInterval: difficultyLevel, target: self,
                 selector: #selector(moveDown), userInfo: nil, repeats: true)
