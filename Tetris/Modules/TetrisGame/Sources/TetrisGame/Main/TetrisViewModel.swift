@@ -2,6 +2,8 @@ import Foundation
 
 final class TetrisViewModel {
 
+    private weak var viewController: TetrisGameViewController?
+
     private var board = Board()
     private var timer: Timer?
     private var difficultyLevel = 0.2
@@ -19,6 +21,10 @@ final class TetrisViewModel {
     var currentScore: Bindable<Int> = Bindable(0)
     var boardUsersScore: Bindable<[User]> = Bindable([])
     var nextShape: Bindable<[[Int]]> = Bindable([[]])
+
+    func setController(_ controller: TetrisGameViewController) {
+        self.viewController = controller
+    }
 
     func showMenu() {
         if board.gameOver {
@@ -119,7 +125,20 @@ final class TetrisViewModel {
     }
 
     @objc private func moveDown() {
-        board.moveDown()
+
+        board.moveDown { [weak self] rows in
+            guard let self = self else { return }
+            self.timer?.invalidate()
+
+            rows.forEach {
+                self.viewController?.animate(row: $0)
+            }
+
+            self.timer = Timer.scheduledTimer(
+                timeInterval: difficultyLevel, target: self,
+                selector: #selector(moveDown), userInfo: nil, repeats: true)
+        }
+
         renderGame()
         checkGameStatus()
         nextShape.value = board.getNextShapeMatrix()
@@ -143,7 +162,7 @@ final class TetrisViewModel {
 
     private func renderGame() {
         currentScore.value = board.getPoints()
-        NotificationCenter.default.post(name: .render, object: nil)
+        viewController?.render()
     }
 
     private func setDifficultyLevel() {
@@ -170,8 +189,4 @@ final class TetrisViewModel {
             difficultyLevel = 0.4
         }
     }
-}
-
-extension Notification.Name {
-    static let render = Notification.Name("render")
 }

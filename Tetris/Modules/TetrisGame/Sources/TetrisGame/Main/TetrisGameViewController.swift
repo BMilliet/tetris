@@ -3,7 +3,7 @@ import ViewCode
 
 public final class TetrisGameViewController: UIViewController {
 
-    private let model: TetrisViewModel
+    private var model: TetrisViewModel?
 
     private lazy var boardView: UIView = {
         let board = UIView()
@@ -43,6 +43,7 @@ public final class TetrisGameViewController: UIViewController {
     init(_ viewModel: TetrisViewModel) {
         self.model = viewModel
         super.init(nibName: nil, bundle: nil)
+        model?.setController(self)
     }
 
     public override func viewDidLoad() {
@@ -79,59 +80,59 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     @objc private func tapScreen() {
-        model.showMenu()
+        model?.showMenu()
     }
 
     @objc private func startNewGame() {
-        model.startNewGame()
+        model?.startNewGame()
     }
 
     @objc private func showDifficultyMenu() {
-        model.showDifficultyMenu()
+        model?.showDifficultyMenu()
     }
 
     @objc private func showStats() {
-        model.showStats()
+        model?.showStats()
     }
 
     @objc private func acceptDifficulty() {
-        model.startNewGame()
+        model?.startNewGame()
     }
 
     @objc private func increaseDifficulty() {
-        model.increaseDifficulty()
+        model?.increaseDifficulty()
     }
 
     @objc private func decreaseDifficulty() {
-        model.decreaseDifficulty()
+        model?.decreaseDifficulty()
     }
 
     @objc private func dismissScoreSave() {
-        model.dismissScoreSave()
+        model?.dismissScoreSave()
     }
 
     @objc private func tapLeft() {
-        model.moveLeft()
+        model?.moveLeft()
     }
 
     @objc private func tapRight() {
-        model.moveRight()
+        model?.moveRight()
     }
     
     @objc private func rotateLeft() {
-        model.rotateLeft()
+        model?.rotateLeft()
     }
     
     @objc private func rotateRight() {
-        model.rotateRight()
+        model?.rotateRight()
     }
 
     @objc private func tapDown() {
-        model.drop()
+        model?.drop()
     }
 
-    @objc private func render() {
-        let matrix = model.currentBoard()
+    func render() {
+        guard let matrix = model?.currentBoard() else { return }
 
         boardView.subviews.forEach { $0.removeFromSuperview() }
 
@@ -150,45 +151,71 @@ public final class TetrisGameViewController: UIViewController {
         }
     }
 
+    func animate(row: Int) {
+        let animatedRow = UIView()
+        let y = CGFloat(row) * CUBE_SIZE
+        animatedRow.size(height: CUBE_SIZE, width: boardView.frame.width)
+
+        self.view.addSubview(animatedRow)
+
+        animatedRow.anchor(
+            bottom: boardView.bottomAnchor,
+            leading: boardView.leadingAnchor,
+            paddingBottom: boardView.frame.height - (y + CUBE_SIZE)
+        )
+
+        animatedRow.backgroundColor = .white
+
+        UIView.animate(withDuration: 0.02, delay: 0, options: [.autoreverse], animations: {
+            animatedRow.alpha = 1
+        }) { _ in
+            UIView.animate(withDuration: 0.05, delay: 0.2, options: .curveEaseInOut, animations: {
+                animatedRow.alpha = 0.0
+            }) { _ in
+                animatedRow.removeFromSuperview()
+            }
+        }
+    }
+
     private func bind() {
-        model.difficultyMenuHidden.bind { [weak self] in
+        model?.difficultyMenuHidden.bind { [weak self] in
             self?.difficultyMenu.isHidden = $0
         }
 
-        model.scoreBoardHidden.bind { [weak self] in
+        model?.scoreBoardHidden.bind { [weak self] in
             self?.scoreBoard.isHidden = $0
         }
 
-        model.saveScoreViewHidden.bind { [weak self] in
+        model?.saveScoreViewHidden.bind { [weak self] in
             self?.saveScoreView.isHidden = $0
         }
 
-        model.mainMenuHidden.bind { [weak self] in
+        model?.mainMenuHidden.bind { [weak self] in
             self?.menu.isHidden = $0
         }
 
-        model.viewEndEditing.bind { [weak self] in
+        model?.viewEndEditing.bind { [weak self] in
             self?.view.endEditing($0)
         }
 
-        model.difficultyLabel.bind { [weak self] in
+        model?.difficultyLabel.bind { [weak self] in
             self?.difficultyMenu.setDifficultyLabel($0)
         }
 
-        model.currentScore.bind { [weak self] in
+        model?.currentScore.bind { [weak self] in
             self?.header.setPointsLabel($0)
             self?.saveScoreView.setScore($0)
         }
 
-        model.controlButtonsEnabled.bind { [weak self] in
+        model?.controlButtonsEnabled.bind { [weak self] in
             self?.controlPanel.setButtonsEnabled($0)
         }
 
-        model.boardUsersScore.bind { [weak self] in
+        model?.boardUsersScore.bind { [weak self] in
             self?.scoreBoard.setScore($0)
         }
 
-        model.nextShape.bind { [weak self] in
+        model?.nextShape.bind { [weak self] in
             self?.header.setNextShape($0)
         }
     }
@@ -212,6 +239,5 @@ public final class TetrisGameViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(rotateRight), name: .rotateRight, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(dismissScoreSave), name: .savedScore, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(render), name: .render, object: nil)
     }
 }

@@ -1,5 +1,10 @@
 import UIKit
 
+struct RemovableMatrix {
+    let newMatrix: [[Int]]
+    let removedRows: [Int]
+}
+
 public final class Board {
 
     private lazy var selectedShape: ShapeProtocol = Shape()
@@ -73,7 +78,7 @@ public final class Board {
         matrix = MatrixHandler.merge(shape, matrix)
     }
 
-    func moveDown(_ value: Int = 1) {
+    func moveDown(_ value: Int = 1, removeLineAction: (_ rows: [Int]) -> Void ) {
         let shape = selectedShape
         let x = shape.xPoint()
         let y = shape.yPoint()
@@ -90,6 +95,18 @@ public final class Board {
         switch collision {
         case .floor, .anotherShape:
             checkGameStatus()
+
+            let removable = rowsToRemove()
+            if removable.removedRows.count > 0 {
+                countPoints(removable.removedRows)
+
+                removeLineAction(removable.removedRows)
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) { [weak self] in
+                    self?.matrix = removable.newMatrix
+                }
+            }
+
             createNewShape()
             return
         default:
@@ -136,36 +153,37 @@ public final class Board {
         matrix = MatrixHandler.merge(shape, matrix)
     }
 
-    func removeRowIfPossible() {
+    private func rowsToRemove() -> RemovableMatrix {
         var newMatrix = [[Int]]()
-        var removedRows = 0
+        var rows = [Int]()
 
-        matrix.forEach { row in
+        for (i, row) in matrix.enumerated() {
             if row.allSatisfy({ $0 != 0 }) {
-                removedRows += 1
+                rows.append(i)
             } else {
                 newMatrix.append(row)
             }
-
         }
 
-        for _ in 0..<removedRows {
+
+        for _ in 0..<rows.count {
             newMatrix.insert(Array(repeating: 0, count: COLUMNS), at: 0)
         }
 
-        points += SCORE_BASE * removedRows
+        return RemovableMatrix(newMatrix: newMatrix, removedRows: rows)
+    }
+
+    private func countPoints(_ removedRows: [Int]) {
+        points += SCORE_BASE * removedRows.count
         var bonus = 0
 
-        for row in 0..<removedRows {
+        for row in 0..<removedRows.count {
             points += bonus * row
             bonus += SCORE_BONUS
         }
-
-        matrix = newMatrix
     }
 
     private func createNewShape() {
-        removeRowIfPossible()
         selectedShape = nextShape
         nextShape = Shape()
     }
