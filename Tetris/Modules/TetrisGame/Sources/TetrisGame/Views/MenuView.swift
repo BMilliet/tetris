@@ -19,15 +19,6 @@ final class MenuView: UIView {
         return button
     }()
 
-    private lazy var difficultyButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .darkGray
-        button.layer.cornerRadius = 10
-        button.setTitle("Difficulty", for: .normal)
-        button.addTarget(self, action: #selector(showDifficultyMenu), for: .touchUpInside)
-        return button
-    }()
-
     private lazy var statsButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -42,22 +33,15 @@ final class MenuView: UIView {
         super.init(frame: .zero)
         self.addSubview(menu)
         menu.addArrangedSubview(newGameButton)
-        menu.addArrangedSubview(difficultyButton)
         menu.addArrangedSubview(statsButton)
 
         menu.setAnchorsEqual(to: self)
         newGameButton.size(height: 50, width: UIScreen.main.bounds.size.width - 100)
-        difficultyButton.size(height: 50, width: UIScreen.main.bounds.size.width - 100)
         statsButton.size(height: 50, width: UIScreen.main.bounds.size.width - 100)
     }
 
     @objc private func startNewGame() {
         NotificationCenter.default.post(name: .startNewGame, object: nil)
-    }
-
-    @objc private func showDifficultyMenu() {
-        NotificationCenter.default.post(name: .showDifficultyMenu, object: nil)
-
     }
 
     @objc private func showStats() {
@@ -68,5 +52,4 @@ final class MenuView: UIView {
 extension Notification.Name {
     static let showStats = Notification.Name("showStats")
     static let startNewGame = Notification.Name("startNewGame")
-    static let showDifficultyMenu = Notification.Name("showDifficultyMenu")
 }

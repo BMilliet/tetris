@@ -6,18 +6,15 @@ final class TetrisViewModel {
 
     private var board = Board()
     private var timer: Timer?
-    private var difficultyLevel = 0.2
-    private var difficultyNumber = 2
+    private var difficultyLevel = 0.6
 
     var viewEndEditing: Bindable<Bool> = Bindable(true)
 
     var controlButtonsEnabled: Bindable<Bool> = Bindable(false)
-    var difficultyMenuHidden: Bindable<Bool> = Bindable(true)
     var saveScoreViewHidden: Bindable<Bool> = Bindable(true)
     var scoreBoardHidden: Bindable<Bool> = Bindable(true)
     var mainMenuHidden: Bindable<Bool> = Bindable(false)
 
-    var difficultyLabel: Bindable<String> = Bindable("")
     var currentScore: Bindable<Int> = Bindable(0)
     var boardUsersScore: Bindable<[User]> = Bindable([])
     var nextShape: Bindable<[[Int]]> = Bindable([[]])
@@ -31,12 +28,6 @@ final class TetrisViewModel {
             hideAllViews()
             mainMenuHidden.value = false
         }
-    }
-
-    func showDifficultyMenu() {
-        setDifficultyLevel()
-        hideAllViews()
-        difficultyMenuHidden.value = false
     }
 
     func showStats() {
@@ -60,7 +51,6 @@ final class TetrisViewModel {
         viewEndEditing.value = true
         scoreBoardHidden.value = true
         saveScoreViewHidden.value = true
-        difficultyMenuHidden.value = true
     }
 
     func acceptDifficulty() {
@@ -110,20 +100,6 @@ final class TetrisViewModel {
         return board.getMatrix()
     }
 
-    func increaseDifficulty() {
-        if difficultyNumber < 5 {
-            difficultyNumber += 1
-        }
-        setDifficultyLevel()
-    }
-
-    func decreaseDifficulty() {
-        if difficultyNumber > 0 {
-            difficultyNumber -= 1
-        }
-        setDifficultyLevel()
-    }
-
     @objc private func moveDown() {
 
         board.moveDown { [weak self] rows in
@@ -144,7 +120,43 @@ final class TetrisViewModel {
         nextShape.value = board.getNextShapeMatrix()
     }
 
+    private func increaseGameDifficulty() {
+        let score = board.getPoints()
+
+        if score >= 6500 {
+            difficultyLevel = 0.05
+            return
+        }
+
+        if score >= 3200 {
+            difficultyLevel = 0.1
+            return
+        }
+
+        if score >= 1500 {
+            difficultyLevel = 0.2
+            return
+        }
+
+        if score >= 900 {
+            difficultyLevel = 0.3
+            return
+        }
+
+        if score >= 300 {
+            difficultyLevel = 0.4
+            return
+        }
+
+        if score >= 100 {
+            difficultyLevel = 0.5
+            return
+        }
+    }
+
     private func checkGameStatus() {
+
+        increaseGameDifficulty()
 
         if !board.gameOver {
             return
@@ -163,30 +175,5 @@ final class TetrisViewModel {
     private func renderGame() {
         currentScore.value = board.getPoints()
         viewController?.render()
-    }
-
-    private func setDifficultyLevel() {
-        switch difficultyNumber {
-        case 0:
-            difficultyLabel.value = "very easy"
-            difficultyLevel = 0.8
-        case 1:
-            difficultyLabel.value = "easy"
-            difficultyLevel = 0.6
-        case 2:
-            difficultyLabel.value = "normal"
-            difficultyLevel = 0.4
-        case 3:
-            difficultyLabel.value = "hard"
-            difficultyLevel = 0.2
-        case 4:
-            difficultyLabel.value = "very hard"
-            difficultyLevel = 0.1
-        case 5:
-            difficultyLabel.value = "legendary"
-            difficultyLevel = 0.05
-        default:
-            difficultyLevel = 0.4
-        }
     }
 }

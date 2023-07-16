@@ -32,7 +32,6 @@ public final class TetrisGameViewController: UIViewController {
     private lazy var header: HeaderView = HeaderView()
     private lazy var menu: MenuView = MenuView()
     private lazy var controlPanel: ControlPanelView = ControlPanelView()
-    private lazy var difficultyMenu: DifficultyMenuView = DifficultyMenuView()
     private lazy var saveScoreView: SaveScoreView = SaveScoreView()
     private lazy var scoreBoard: ScoreBoard = ScoreBoard()
 
@@ -63,7 +62,6 @@ public final class TetrisGameViewController: UIViewController {
         boardView.size(height: BOARDVIEW_HEIGHT, width: BOARDVIEW_WIDTH)
 
         self.view.addSubview(menu)
-        self.view.addSubview(difficultyMenu)
         self.view.addSubview(saveScoreView)
         self.view.addSubview(scoreBoard)
 
@@ -71,7 +69,6 @@ public final class TetrisGameViewController: UIViewController {
         scoreBoard.isHidden = true
 
         menu.centerXYEqual(to: view)
-        difficultyMenu.centerXYEqual(to: view)
         saveScoreView.centerXYEqual(to: view)
         scoreBoard.centerXYEqual(to: view)
 
@@ -87,24 +84,12 @@ public final class TetrisGameViewController: UIViewController {
         model?.startNewGame()
     }
 
-    @objc private func showDifficultyMenu() {
-        model?.showDifficultyMenu()
-    }
-
     @objc private func showStats() {
         model?.showStats()
     }
 
     @objc private func acceptDifficulty() {
         model?.startNewGame()
-    }
-
-    @objc private func increaseDifficulty() {
-        model?.increaseDifficulty()
-    }
-
-    @objc private func decreaseDifficulty() {
-        model?.decreaseDifficulty()
     }
 
     @objc private func dismissScoreSave() {
@@ -178,9 +163,6 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     private func bind() {
-        model?.difficultyMenuHidden.bind { [weak self] in
-            self?.difficultyMenu.isHidden = $0
-        }
 
         model?.scoreBoardHidden.bind { [weak self] in
             self?.scoreBoard.isHidden = $0
@@ -196,10 +178,6 @@ public final class TetrisGameViewController: UIViewController {
 
         model?.viewEndEditing.bind { [weak self] in
             self?.view.endEditing($0)
-        }
-
-        model?.difficultyLabel.bind { [weak self] in
-            self?.difficultyMenu.setDifficultyLabel($0)
         }
 
         model?.currentScore.bind { [weak self] in
@@ -224,13 +202,8 @@ public final class TetrisGameViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapScreen))
         self.view.addGestureRecognizer(tap)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(showDifficultyMenu), name: .showDifficultyMenu, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(startNewGame), name: .startNewGame, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showStats), name: .showStats, object: nil)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(acceptDifficulty), name: .acceptDifficulty, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(increaseDifficulty), name: .increaseDifficulty, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(decreaseDifficulty), name: .decreaseDifficulty, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(tapDown), name: .tapDown, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(tapRight), name: .tapRight, object: nil)
