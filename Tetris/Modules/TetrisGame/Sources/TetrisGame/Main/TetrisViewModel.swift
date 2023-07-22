@@ -4,7 +4,7 @@ final class TetrisViewModel {
 
     private weak var viewController: TetrisGameViewController?
 
-    private var board = Board()
+    private var board = Board(isGameOver: true)
     private var timer: Timer?
     private var difficultyLevel = 0.6
 
@@ -18,6 +18,7 @@ final class TetrisViewModel {
     var currentScore: Bindable<Int> = Bindable(0)
     var boardUsersScore: Bindable<[User]> = Bindable([])
     var nextShape: Bindable<[[Int]]> = Bindable([[]])
+    var currentEmoji: Bindable<String> = Bindable("")
 
     func setController(_ controller: TetrisGameViewController) {
         self.viewController = controller
@@ -106,9 +107,7 @@ final class TetrisViewModel {
             guard let self = self else { return }
             self.timer?.invalidate()
 
-            rows.forEach {
-                self.viewController?.animate(row: $0)
-            }
+            self.viewController?.animate(rows: rows, points: board.getPointsUp())
 
             self.timer = Timer.scheduledTimer(
                 timeInterval: difficultyLevel, target: self,
@@ -120,36 +119,72 @@ final class TetrisViewModel {
         nextShape.value = board.getNextShapeMatrix()
     }
 
+    var level1 = false
+    var level2 = false
+    var level3 = false
+    var level4 = false
+    var level5 = false
+    var level6 = false
+
     private func increaseGameDifficulty() {
         let score = board.getPoints()
 
-        if score >= 6500 {
-            difficultyLevel = 0.05
+        if score >= 3000 && !level6 {
+            level6 = true
+            let emoji = "💀"
+            currentEmoji.value = emoji
+            viewController?.speedUpNotification(title: "bro u lose", emoji: emoji)
+            difficultyLevel = 0.04
             return
         }
 
-        if score >= 3200 {
+        if score >= 1000 && !level5 {
+            level5 = true
+            let emoji = "👿"
+            currentEmoji.value = emoji
+            viewController?.speedUpNotification(title: "keep going?", emoji: emoji)
+            difficultyLevel = 0.06
+            return
+        }
+
+        if score >= 800 && !level4 {
+            level4 = true
+            let emoji = "😡"
+            currentEmoji.value = emoji
+            viewController?.speedUpNotification(title: "LETS GO!!", emoji: emoji)
+            difficultyLevel = 0.08
+            return
+        }
+
+        if score >= 450 && !level3 {
+            level3 = true
+            let emoji = "😹"
+            currentEmoji.value = emoji
+            viewController?.speedUpNotification(title: "ok ok...", emoji: emoji)
             difficultyLevel = 0.1
             return
         }
 
-        if score >= 1500 {
+        if score >= 300 && !level2 {
+            level2 = true
+            let emoji = "🍰"
+            currentEmoji.value = emoji
+            viewController?.speedUpNotification(title: "still easy...", emoji: emoji)
             difficultyLevel = 0.2
             return
         }
 
-        if score >= 900 {
+        if score >= 200 && !level1 {
+            level1 = true
+            let emoji = "😴"
+            currentEmoji.value = emoji
+            viewController?.speedUpNotification(title: "zzzZZZzzz..", emoji: emoji)
             difficultyLevel = 0.3
             return
         }
 
-        if score >= 300 {
-            difficultyLevel = 0.4
-            return
-        }
-
         if score >= 100 {
-            difficultyLevel = 0.5
+            difficultyLevel = 0.4
             return
         }
     }

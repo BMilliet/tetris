@@ -75,7 +75,7 @@ public extension UIView {
         subviews.forEach { self.addSubview($0) }
     }
 
-    func blinkAnimation() {
+    func blink() {
         UIView.animate(withDuration: 0.05, delay: 0, options: [.autoreverse], animations: {
             self.alpha = 0
         }) { _ in
@@ -83,18 +83,12 @@ public extension UIView {
         }
     }
 
-    func upDownFade() {
-        UIView.animate(withDuration: 0.8, delay: 0, options: .curveEaseInOut, animations: {
-            self.transform = .identity
-            self.transform = CGAffineTransform(translationX: 0, y: self.bounds.height - 20)
-            self.alpha = 1.0
+    func upAndFade(duration: TimeInterval, yPoint: CGFloat) {
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut, animations: {
+            self.transform = CGAffineTransform(translationX: 0, y: yPoint)//self.bounds.height - 200)
+            self.alpha = 1
         }) { _ in
-            UIView.animate(withDuration: 0.8, delay: 0.8, options: .curveEaseInOut, animations: {
-                self.transform = CGAffineTransform(translationX: 0, y: self.bounds.height - 28)
-                self.alpha = 0.0
-            }) { _ in
-                self.removeFromSuperview()
-            }
+            self.removeFromSuperview()
         }
     }
 

@@ -138,30 +138,30 @@ final class ControlPanelView: UIView {
     }
 
     @objc private func tapDown() {
-        buttonDown.blinkAnimation()
-        arrowDown.blinkAnimation()
+        buttonDown.blink()
+        arrowDown.blink()
         NotificationCenter.default.post(name: .tapDown, object: nil)
     }
 
     @objc private func tapRight() {
-        buttonRight.blinkAnimation()
-        arrowRight.blinkAnimation()
+        buttonRight.blink()
+        arrowRight.blink()
         NotificationCenter.default.post(name: .tapRight, object: nil)
     }
 
     @objc private func tapLeft() {
-        buttonLeft.blinkAnimation()
-        arrowLeft.blinkAnimation()
+        buttonLeft.blink()
+        arrowLeft.blink()
         NotificationCenter.default.post(name: .tapLeft, object: nil)
     }
 
     @objc private func rotateLeft() {
-        rotateLeftButton.blinkAnimation()
+        rotateLeftButton.blink()
         NotificationCenter.default.post(name: .rotateLeft, object: nil)
     }
 
     @objc private func rotateRight() {
-        rotateRightButton.blinkAnimation()
+        rotateRightButton.blink()
         NotificationCenter.default.post(name: .rotateRight, object: nil)
     }
 

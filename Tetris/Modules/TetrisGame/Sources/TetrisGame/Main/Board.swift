@@ -15,10 +15,12 @@ public final class Board {
 
     private var matrix = [[Int]]()
     private var points = 0
+    private var pointsUp = 0
 
     var gameOver = false
 
-    init() {
+    init(isGameOver: Bool = false) {
+        self.gameOver = isGameOver
         drawMatrix()
         createNewShape()
     }
@@ -29,6 +31,10 @@ public final class Board {
 
     func getPoints() -> Int {
         return points
+    }
+
+    func getPointsUp() -> Int {
+        return pointsUp
     }
 
     func getNextShapeMatrix() -> [[Int]] {
@@ -174,6 +180,7 @@ public final class Board {
     }
 
     private func countPoints(_ removedRows: [Int]) {
+        let previousScore = points
         points += SCORE_BASE * removedRows.count
         var bonus = 0
 
@@ -181,6 +188,8 @@ public final class Board {
             points += bonus * row
             bonus += SCORE_BONUS
         }
+
+        pointsUp = points - previousScore
     }
 
     private func createNewShape() {

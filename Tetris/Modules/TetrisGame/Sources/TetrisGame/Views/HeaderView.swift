@@ -26,22 +26,34 @@ final class HeaderView: UIView {
         return label
     }()
 
+    private lazy var emojiLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 20)
+        label.text = ""
+        return label
+    }()
+
     required init?(coder: NSCoder) { return nil }
     public init() {
         super.init(frame: .zero)
         self.addSubview(nextShape)
         self.addSubview(scoreLabel)
         self.addSubview(pointsLabel)
+        self.addSubview(emojiLabel)
         self.backgroundColor = .black
 
         self.size(height: 60)
         nextShape.size(height: 50, width: 50)
         scoreLabel.size(height: 30, width: 70)
         pointsLabel.size(height: 30, width: 200)
+        emojiLabel.size(height: 50, width: 50)
 
         nextShape.centerYEqual(to: self)
         scoreLabel.centerYEqual(to: self)
         pointsLabel.centerYEqual(to: self)
+        emojiLabel.centerXYEqual(to: self)
 
         nextShape.anchor(trailing: self.trailingAnchor, paddingRight: 42)
         scoreLabel.anchor(leading: self.leadingAnchor, paddingLeft: 42)
@@ -79,20 +91,10 @@ final class HeaderView: UIView {
             return
         }
 
-        addPointsAnimation(points - current)
         pointsLabel.text = "\(points)"
     }
 
-    func addPointsAnimation(_ points: Int) {
-        let newPoints = UILabel()
-        newPoints.textColor = .green
-        newPoints.textAlignment = .left
-        newPoints.font = .boldSystemFont(ofSize: 20)
-        newPoints.text = "+\(points)"
-        newPoints.alpha = 0
-
-        self.addSubview(newPoints)
-        newPoints.setAnchorsEqual(to: pointsLabel, .init(top: 0, left: 0, bottom: 0, right: 48))
-        newPoints.upDownFade()
+    func setEmojiLabel(_ emoji: String) {
+        emojiLabel.text = emoji
     }
 }

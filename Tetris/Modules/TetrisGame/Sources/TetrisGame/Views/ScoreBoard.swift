@@ -50,6 +50,25 @@ public final class ScoreBoard: UIView {
             $0.removeFromSuperview()
         }
 
+        if users.isEmpty {
+            let container = UIStackView()
+            container.axis = .horizontal
+            container.size(height: 50)
+            container.backgroundColor = .lightGray
+
+            let label = UILabel()
+            label.textAlignment = .center
+            label.textColor = .darkGray
+            label.font = .boldSystemFont(ofSize: 20)
+            label.adjustsFontSizeToFitWidth = true
+            label.minimumScaleFactor = 0.5
+            label.text = "Best 5 scores will appear here"
+
+            container.addArrangedSubview(label)
+            scoreStack.addArrangedSubview(container)
+            return
+        }
+
         let sorted = users.sorted(by: { $0.score > $1.score })
 
         sorted.forEach { user in
@@ -76,7 +95,7 @@ public final class ScoreBoard: UIView {
             container.addArrangedSubview(name)
             container.addArrangedSubview(score)
 
-            name.text = "\(user.name):"
+            name.text = "   \(user.name):"
             score.text = "\(user.score)"
 
             scoreStack.addArrangedSubview(container)

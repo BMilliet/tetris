@@ -136,28 +136,89 @@ public final class TetrisGameViewController: UIViewController {
         }
     }
 
-    func animate(row: Int) {
-        let animatedRow = UIView()
-        let y = CGFloat(row) * CUBE_SIZE
-        animatedRow.size(height: CUBE_SIZE, width: boardView.frame.width)
+    func speedUpNotification(title: String, emoji: String) {
+        let container = UIStackView()
+        container.axis = .vertical
+        container.backgroundColor = .lightGray
 
-        self.view.addSubview(animatedRow)
+        let titleLabel = UILabel()
+        titleLabel.size(height: 50)
+        titleLabel.textAlignment = .center
+        titleLabel.textColor = .darkGray
+        titleLabel.font = .boldSystemFont(ofSize: 24)
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.minimumScaleFactor = 0.5
+        titleLabel.text = title
 
-        animatedRow.anchor(
-            bottom: boardView.bottomAnchor,
-            leading: boardView.leadingAnchor,
-            paddingBottom: boardView.frame.height - (y + CUBE_SIZE)
-        )
+        let emojiLabel = UILabel()
+        emojiLabel.size(height: 50)
+        emojiLabel.textAlignment = .center
+        emojiLabel.textColor = .darkGray
+        emojiLabel.font = .boldSystemFont(ofSize: 32)
+        emojiLabel.adjustsFontSizeToFitWidth = true
+        emojiLabel.minimumScaleFactor = 0.5
+        emojiLabel.text = emoji
 
-        animatedRow.backgroundColor = .white
+        container.addArrangedSubview(titleLabel)
+        container.addArrangedSubview(emojiLabel)
+
+        self.view.addSubview(container)
+        container.centerXYEqual(to: boardView)
+        container.upAndFade(duration: 2, yPoint: container.bounds.height - 20)
+    }
+
+    func animate(rows: [Int], points: Int) {
+
+        var rowsView = [UIView]()
+        var topRowY: CGFloat = 0
+
+        rows.forEach {
+            let animatedRow = UIView()
+            animatedRow.backgroundColor = .white
+            self.view.addSubview(animatedRow)
+
+            let y = CGFloat($0) * CUBE_SIZE
+            animatedRow.size(height: CUBE_SIZE, width: boardView.frame.width)
+
+            animatedRow.anchor(
+                bottom: boardView.bottomAnchor,
+                leading: boardView.leadingAnchor,
+                paddingBottom: boardView.frame.height - (y + CUBE_SIZE)
+            )
+
+            rowsView.append(animatedRow)
+
+            if animatedRow.frame.maxY > topRowY {
+                topRowY = animatedRow.frame.maxY
+            }
+        }
+
+        let pointsLabel = UILabel()
+        pointsLabel.text = "+\(points)"
+        pointsLabel.textColor = .green
+        pointsLabel.textAlignment = .center
+        pointsLabel.font = .boldSystemFont(ofSize: 24)
+
+        self.view.addSubview(pointsLabel)
+
+        pointsLabel.size(height: 100, width: 200)
+        pointsLabel.centerXEqual(to: boardView)
+        pointsLabel.anchor(bottom: boardView.bottomAnchor, paddingBottom: topRowY + 24)
+        pointsLabel.upAndFade(duration: 1.5, yPoint: pointsLabel.bounds.height - 200)
 
         UIView.animate(withDuration: 0.02, delay: 0, options: [.autoreverse], animations: {
-            animatedRow.alpha = 1
+            rowsView.forEach {
+                $0.alpha = 1
+            }
         }) { _ in
             UIView.animate(withDuration: 0.05, delay: 0.2, options: .curveEaseInOut, animations: {
-                animatedRow.alpha = 0.0
+                rowsView.forEach {
+                    $0.alpha = 0.0
+                }
             }) { _ in
-                animatedRow.removeFromSuperview()
+                rowsView.forEach {
+                    $0.removeFromSuperview()
+                }
             }
         }
     }
@@ -183,6 +244,10 @@ public final class TetrisGameViewController: UIViewController {
         model?.currentScore.bind { [weak self] in
             self?.header.setPointsLabel($0)
             self?.saveScoreView.setScore($0)
+        }
+
+        model?.currentEmoji.bind { [weak self] in
+            self?.header.setEmojiLabel($0)
         }
 
         model?.controlButtonsEnabled.bind { [weak self] in
