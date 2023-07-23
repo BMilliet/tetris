@@ -54,6 +54,7 @@ public final class ScoreBoard: UIView {
             let container = UIStackView()
             container.axis = .horizontal
             container.size(height: 50)
+            container.spacing = 18
             container.backgroundColor = .lightGray
 
             let label = UILabel()
@@ -75,10 +76,10 @@ public final class ScoreBoard: UIView {
             let container = UIStackView()
             container.axis = .horizontal
             container.size(height: 50)
+            container.spacing = 18
             container.backgroundColor = .lightGray
 
             let name = UILabel()
-            name.size(width: 100)
             name.textAlignment = .left
             name.textColor = .darkGray
             name.font = .boldSystemFont(ofSize: 20)
@@ -86,7 +87,7 @@ public final class ScoreBoard: UIView {
             name.minimumScaleFactor = 0.5
 
             let score = UILabel()
-            score.textAlignment = .right
+            score.textAlignment = .left
             score.textColor = .darkGray
             score.font = .boldSystemFont(ofSize: 20)
             score.adjustsFontSizeToFitWidth = true
@@ -94,6 +95,7 @@ public final class ScoreBoard: UIView {
 
             container.addArrangedSubview(name)
             container.addArrangedSubview(score)
+            container.addArrangedSubview(UIView())
 
             name.text = "   \(user.name):"
             score.text = "\(user.score)"

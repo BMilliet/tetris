@@ -137,9 +137,23 @@ public final class TetrisGameViewController: UIViewController {
     }
 
     func speedUpNotification(title: String, emoji: String) {
+        let wrapper = UIStackView()
+        wrapper.axis = .horizontal
+        wrapper.backgroundColor = .lightGray
+        wrapper.layer.cornerRadius = 20
+
         let container = UIStackView()
         container.axis = .vertical
-        container.backgroundColor = .lightGray
+
+        let spaceL = UIView()
+        spaceL.size(width: 8)
+
+        let spaceR = UIView()
+        spaceR.size(width: 8)
+
+        wrapper.addArrangedSubview(spaceR)
+        wrapper.addArrangedSubview(container)
+        wrapper.addArrangedSubview(spaceL)
 
         let titleLabel = UILabel()
         titleLabel.size(height: 50)
@@ -151,7 +165,7 @@ public final class TetrisGameViewController: UIViewController {
         titleLabel.text = title
 
         let emojiLabel = UILabel()
-        emojiLabel.size(height: 50)
+        emojiLabel.size(height: 100)
         emojiLabel.textAlignment = .center
         emojiLabel.textColor = .darkGray
         emojiLabel.font = .boldSystemFont(ofSize: 32)
@@ -162,9 +176,9 @@ public final class TetrisGameViewController: UIViewController {
         container.addArrangedSubview(titleLabel)
         container.addArrangedSubview(emojiLabel)
 
-        self.view.addSubview(container)
-        container.centerXYEqual(to: boardView)
-        container.upAndFade(duration: 2, yPoint: container.bounds.height - 20)
+        self.view.addSubview(wrapper)
+        wrapper.centerXYEqual(to: boardView)
+        wrapper.upAndFade(duration: 2.5, yPoint: wrapper.bounds.height - 20)
     }
 
     func animate(rows: [Int], points: Int) {

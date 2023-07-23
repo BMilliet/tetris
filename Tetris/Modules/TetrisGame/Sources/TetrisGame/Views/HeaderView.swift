@@ -30,7 +30,7 @@ final class HeaderView: UIView {
         let label = UILabel()
         label.textColor = .white
         label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = .boldSystemFont(ofSize: 26)
         label.text = ""
         return label
     }()
