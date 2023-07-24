@@ -245,6 +245,9 @@ public final class TetrisGameViewController: UIViewController {
 
         model?.saveScoreViewHidden.bind { [weak self] in
             self?.saveScoreView.isHidden = $0
+            if !$0 {
+                self?.boardView.confetti()
+            }
         }
 
         model?.mainMenuHidden.bind { [weak self] in

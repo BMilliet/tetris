@@ -18,7 +18,7 @@ public enum CollisionTypes {
 }
 
 public enum Colors {
-    static func get(_ n: Int) -> UIColor {
+    static func get(_ n: Int = Int(arc4random_uniform(8)) + 1) -> UIColor {
         switch n {
         case 0:
             return UIColor.green
@@ -82,7 +82,7 @@ class Bindable<T> {
 public enum MatrixFactory {
     static func create(_ shape: Int? = nil) -> [[[Int]]] {
         let color = Int(arc4random_uniform(8)) + 1
-        let shape = shape ?? Int(arc4random_uniform(6))
+        let shape = shape ?? Int(arc4random_uniform(7))
 
         switch shape {
         case 0:

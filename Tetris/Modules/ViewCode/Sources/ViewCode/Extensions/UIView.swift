@@ -88,6 +88,7 @@ public extension UIView {
             self.transform = CGAffineTransform(translationX: 0, y: yPoint)//self.bounds.height - 200)
             self.alpha = 1
         }) { _ in
+            self.alpha = 0
             self.removeFromSuperview()
         }
     }

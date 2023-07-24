@@ -153,78 +153,84 @@ final class TetrisViewModel {
     private var level4 = false
     private var level5 = false
     private var level6 = false
+    private var level7 = false
 
     private func increaseGameDifficulty() {
         let score = board.getPoints()
 
-        if score >= 3000 && !level6 {
-            level6 = true
+        if score >= 3000 && !level7 {
+            level7 = true
             let emoji = "💀"
             currentEmoji.value = emoji
-            difficultyLevel = 0.04
+            difficultyLevel = 0.05
             doWhileStopGame { [weak self] in
                 self?.viewController?.speedUpNotification(title: "bro u lose", emoji: emoji)
             }
             return
         }
 
-        if score >= 1000 && !level5 {
-            level5 = true
+        if score >= 2000 && !level6 {
+            level6 = true
             let emoji = "👿"
             currentEmoji.value = emoji
-            difficultyLevel = 0.06
+            difficultyLevel = 0.1
             doWhileStopGame { [weak self] in
-                self?.viewController?.speedUpNotification(title: "keep going?", emoji: emoji)
+                self?.viewController?.speedUpNotification(title: "Grrrrr", emoji: emoji)
             }
             return
         }
 
-        if score >= 800 && !level4 {
-            level4 = true
+        if score >= 1000 && !level5 {
+            level5 = true
             let emoji = "😡"
             currentEmoji.value = emoji
-            difficultyLevel = 0.08
+            difficultyLevel = 0.25
             doWhileStopGame { [weak self] in
                 self?.viewController?.speedUpNotification(title: "LETS GO!!", emoji: emoji)
             }
             return
         }
 
-        if score >= 450 && !level3 {
+        if score >= 650 && !level4 {
+            level4 = true
+            let emoji = "😤"
+            currentEmoji.value = emoji
+            difficultyLevel = 0.30
+            doWhileStopGame { [weak self] in
+                self?.viewController?.speedUpNotification(title: "keep going?", emoji: emoji)
+            }
+            return
+        }
+
+        if score >= 350 && !level3 {
             level3 = true
             let emoji = "🤨"
             currentEmoji.value = emoji
-            difficultyLevel = 0.1
+            difficultyLevel = 0.35
             doWhileStopGame { [weak self] in
                 self?.viewController?.speedUpNotification(title: "ok ok...", emoji: emoji)
             }
             return
         }
 
-        if score >= 300 && !level2 {
+        if score >= 200 && !level2 {
             level2 = true
             let emoji = "🍰"
             currentEmoji.value = emoji
-            difficultyLevel = 0.2
+            difficultyLevel = 0.40
             doWhileStopGame { [weak self] in
                 self?.viewController?.speedUpNotification(title: "still easy...", emoji: emoji)
             }
-            return
         }
 
-        if score >= 200 && !level1 {
+        if score >= 100 && !level1 {
             level1 = true
             let emoji = "😴"
             currentEmoji.value = emoji
-            difficultyLevel = 0.3
+            difficultyLevel = 0.45
             doWhileStopGame { [weak self] in
                 self?.viewController?.speedUpNotification(title: "zzzZZZzzz..", emoji: emoji)
             }
-            return
-        }
-
-        if score >= 100 {
-            difficultyLevel = 0.4
             return
         }
     }
