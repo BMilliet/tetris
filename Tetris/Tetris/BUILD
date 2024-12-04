@@ -4,7 +4,7 @@ load("@rules_apple//apple:ios.bzl", "ios_application")
 
 swift_library(
     name = "tetris_module",
-    deps = ["//Tetris/Modules/TetrisGame:tetris_game_module"],  # Referência ao módulo TetrisGame
+    deps = ["//Tetris/Modules/TetrisGame:tetris_game_module"],
     srcs = glob(["Tetris/*.swift"]),
     visibility = ["//visibility:private"],
     module_name = "TetrisApp",

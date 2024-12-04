@@ -1,6 +1,6 @@
 
 build:
-	bazel build //Tetris:tetris-app
+	bazel build //Tetris/Tetris:tetris-app
 
 run:
-	bazel run //Tetris:tetris-app
+	bazel run //Tetris/Tetris:tetris-app
