@@ -7,3 +7,4 @@ run:
 
 xcode:
 	bazel run //Tetris/Tetris:xcodeproj
+	open Tetris/Tetris/Tetris.xcodeproj
