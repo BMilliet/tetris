@@ -1,6 +1,11 @@
 
 load("@rules_swift//swift:swift.bzl", "swift_library")
 load("@rules_apple//apple:ios.bzl", "ios_application")
+load(
+    "@rules_xcodeproj//xcodeproj:defs.bzl",
+    "top_level_target",
+    "xcodeproj",
+)
 
 swift_library(
     name = "tetris_module",
@@ -19,4 +24,13 @@ ios_application(
     minimum_os_version = "16.2",
     visibility = ["//visibility:public"],
     deps = [":tetris_module"],
+)
+
+xcodeproj(
+    name = "xcodeproj",
+    project_name = "Tetris",
+    tags = ["manual"],
+    top_level_targets = [
+        top_level_target(":tetris-app", target_environments = ["simulator"])
+    ],
 )

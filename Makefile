@@ -4,3 +4,6 @@ build:
 
 run:
 	bazel run //Tetris/Tetris:tetris-app
+
+xcode:
+	bazel run //Tetris/Tetris:xcodeproj
